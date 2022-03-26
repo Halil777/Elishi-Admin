@@ -1,0 +1,13 @@
+.emptyImage{
+    width:100px;
+    height:100px;
+}
+.emptyContainer{
+    margin-top:100px;
+}
+
+p{
+    color:#000000;
+    font-family: 'Verdana';
+    font-weight: bold;
+}

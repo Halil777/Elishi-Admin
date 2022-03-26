@@ -1,0 +1,19 @@
+.file-browse{
+    border: 1px solid rgb(133, 133, 133);
+    border-radius:12px;
+    padding:5px;
+    cursor: pointer;
+}
+
+.browse-icon{
+    margin-top: 40px;
+    margin-bottom: 10px;
+    width: 30px;
+    height: 30px;
+}
+
+.browse-title{
+    font-weight:normal;
+    font-size:14px;
+    margin-bottom: 40px;
+}

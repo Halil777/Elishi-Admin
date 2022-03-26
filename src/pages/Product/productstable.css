@@ -1,0 +1,18 @@
+.confirmDialog{
+    background-color:white;
+    border-radius: 12px;
+    padding:12px;
+}
+
+.img{
+    object-fit: cover;
+    width: 200px;
+    height: 100px;
+}
+
+.statusGuide{
+    width: 20px;
+    height: 20px;
+    border-radius: 50px;
+    display: inline-block;
+}

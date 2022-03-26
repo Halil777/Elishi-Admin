@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="first">#F0F4F4</color>
+    <color name="second">#FF4D3C</color>
+    <color name="third">#ADADAD</color>
+    <color name="fourth">#181725</color>
+    <color name="fifth">#FFECD1</color>
+    <color name="white">#FFFFFF</color>
+    <color name="text_color">#4C4F4D</color>
+    <color name="tab_text_color">#4C4F4D</color>
+    <color name="text_filed">#F2F3F2</color>
+    <color name="red">#D80032</color>
+    <color name="disabled">#7C7C7C</color>
+    <color name="main_color_2">#989A9D</color>
+    <color name="stroke">#C5C5C5</color>
+    <color name="solid">#BABEC1</color>
+    <color name="skeletonBackground">#D3DCE2</color>
+    <color name="skeletonColor">#FFFFFF</color>
+    <color name="realWhite">#FFFFFF</color>
+    <color name="realBlack">#181725</color>
+    <color name="transpaerntbg">#F2F0F4F4</color>
+
+    <!--  Placeholder colors  -->
+    <color name="placeholder1">#f7ede2</color>
+    <color name="placeholder2">#ddbea9</color>
+    <color name="placeholder3">#ffe8d6</color>
+    <color name="placeholder4">#b7b7a4</color>
+    <color name="placeholder5">#a5a58d</color>
+    <color name="placeholder6">#6b705c</color>
+    <color name="placeholder7">#e8e8e4</color>
+    <color name="placeholder8">#d8e2dc</color>
+    <color name="placeholder9">#ece4db</color>
+    <color name="placeholder10">#fefae0</color>
+    <color name="placeholder11">#e9ecef</color>
+
+    
+        android:startColor="#FFAC5F"
+        android:endColor="#FF4D3C"/>
+</resources>

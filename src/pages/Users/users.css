@@ -1,0 +1,11 @@
+.confirmDialog{
+    background-color:white;
+    border-radius: 12px;
+    padding:12px;
+}
+
+.imgUser{
+    object-fit: cover;
+    width: 100px;
+    height: 100px;
+}

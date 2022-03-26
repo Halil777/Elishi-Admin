@@ -1,0 +1,62 @@
+*{
+    margin:0;
+    padding:0;
+}
+.loginContainer{
+    background-image:url(../../assets/images/city.jpg);
+    background-repeat:no-repeat;
+    background-position:center;
+    background-size: cover;
+    height:100vh;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top:0;
+}
+.login{
+    padding-top:5%;
+}
+.loginForm{
+    color:white;
+    margin-top:10%;
+    margin-bottom:10%;
+    margin-left:10%;
+    margin-right:10%;
+}
+.textField{
+    color:white;
+}
+.box-login {
+    margin: 0 auto;
+    width: auto;
+    height: auto;
+    background: rgba(16,18,27,0.4);
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+    border-radius: 10px;
+    backdrop-filter: blur(2px);
+}
+
+.input{
+    padding:12px;
+    outline:none;
+    font-size: 14px;
+
+}
+.imgLogin{
+    width:200px;
+    height:200px;
+}
+
+@-moz-keyframes spin { 
+    100% { -moz-transform: rotate(360deg); } 
+}
+@-webkit-keyframes spin { 
+    100% { -webkit-transform: rotate(360deg); } 
+}
+@keyframes spin { 
+    100% { 
+        -webkit-transform: rotate(360deg); 
+        transform:rotate(360deg); 
+    } 
+}
