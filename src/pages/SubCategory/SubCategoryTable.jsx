@@ -121,7 +121,7 @@ const SubCategoryTable = ({ list, isEmpty, categoryList, getData }) => {
         setLoading(true);
         let formData = new FormData();
         if (selectedFile != '') {
-            formData.append('file',);
+            formData.append('file',selectedFile);
         }
 
         formData.append('nameTM', name_tm);

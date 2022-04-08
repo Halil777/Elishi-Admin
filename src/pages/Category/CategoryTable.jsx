@@ -30,7 +30,17 @@ import Empty from '../Empty/Empty';
 import { AxiosInstance } from '../Axios/AxiosInstance';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {showWarning,showError,showSuccess} from '../Alert/Alert.mjs'
+import { showWarning, showError, showSuccess } from '../Alert/Alert.mjs'
+import FileBrowse from '../FileBrowse/FileBrowse';
+import { styled } from '@mui/material/styles';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/black-and-white.css';
+import { server_ip } from '../Axios/AxiosInstance';
+import { data } from '../../constants';
+
+const Input = styled('input')({
+    display: 'none',
+});
 
 const style = {
     position: 'absolute',
@@ -47,7 +57,7 @@ const style = {
 
 const CategoryTable = ({ list, getData, isEmpty }) => {
     const [open, setOpen] = React.useState(false);
-    
+
     const handleClose = () => setOpen(false);
     const [name_tm, setNameTm] = useState('');
     const [name_ru, setNameRu] = useState('');
@@ -55,6 +65,14 @@ const CategoryTable = ({ list, getData, isEmpty }) => {
     const [status, setStatus] = useState(1);
     const [isMain, setMain] = useState(false);
     const [id, setId] = useState(0);
+    const [image, setImage] = useState('Select image');
+    const [selectedFile, setFile] = useState('');
+
+    const handleFileInput = (e) => {
+        setImage(e.target.files[0].name);
+        setFile(e.target.files[0]);
+    }
+
     const handleOpen = (element) => {
         setOpen(true);
         setNameTm(element.category_name_tm);
@@ -63,6 +81,8 @@ const CategoryTable = ({ list, getData, isEmpty }) => {
         setStatus(element.status);
         setMain(element.is_main);
         setId(element.id);
+        setImage(element.image);
+        setFile('');
     };
     const [isLoading, setLoading] = useState(false);
     const handleLoading = () => {
@@ -86,22 +106,28 @@ const CategoryTable = ({ list, getData, isEmpty }) => {
         setNameRu('');
         setNameEn('');
         setStatus(1);
+        setImage('Select image');
+        setFile('');
         setMain(false);
+        setImage('Select image');
+        setFile('');
     }
 
     const updateCategory = () => {
-        if (name_tm == '' || name_ru == '' || name_en == '' || id==0) {
+        if (name_tm == '' || name_ru == '' || name_en == '' || id == 0) {
             showWarning("Enter all required information");
             return;
         }
         setLoading(!isLoading);
-        const category = {
-            id:id,
-            nameTM: name_tm,
-            nameRU: name_ru,
-            nameEN: name_en,
-            status: status,
-            isMain: isMain
+        let category = new FormData();
+        category.append('nameTM', name_tm);
+        category.append('nameRU', name_ru);
+        category.append('nameEN', name_en);
+        category.append('status', status);
+        category.append('isMain', isMain);
+        category.append('id', id);
+        if (selectedFile != '') {
+            category.append('file', selectedFile);
         }
 
         AxiosInstance.put('/category/update-category', category)
@@ -125,7 +151,7 @@ const CategoryTable = ({ list, getData, isEmpty }) => {
 
 
     const deleteCategory = async (element) => {
-        AxiosInstance.delete('/category/delete-category/' + element.id)
+        AxiosInstance.delete('/category/delete-category/' + element.id + '?filename=' + element.image)
             .then(response => {
                 if (!response.data.error) {
                     showSuccess("Successfully deleted!");
@@ -146,6 +172,7 @@ const CategoryTable = ({ list, getData, isEmpty }) => {
                         <TableHead>
                             <TableRow>
                                 <TableCell>ID</TableCell>
+                                <TableCell align="left">Image</TableCell>
                                 <TableCell align="left">Name TM</TableCell>
                                 <TableCell align="left">Name RU</TableCell>
                                 <TableCell align="left">Name EN</TableCell>
@@ -165,13 +192,19 @@ const CategoryTable = ({ list, getData, isEmpty }) => {
                                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                         >
                                             <TableCell component="th" scope="row">{element.id}</TableCell>
+                                            <TableCell align="left">
+                                                <LazyLoadImage
+                                                    placeholderSrc={data.user.placeholder}
+                                                    placeholder={<img src={data.user.placeholder} className="img" />}
+                                                    effect="black-and-white"
+                                                    src={server_ip + "/" + element.image} className="img" /></TableCell>
                                             <TableCell align="left">{element.category_name_tm}</TableCell>
                                             <TableCell align="left">{element.category_name_ru}</TableCell>
                                             <TableCell align="left">{element.category_name_en}</TableCell>
                                             <TableCell align="left">{(element.status == '0' || element.status === '') ? <label>Passive</label> : <label>Active</label>}</TableCell>
-                                            <TableCell align="left">{element.is_main?<label>Yes</label>:<label>No</label>}</TableCell>
+                                            <TableCell align="left">{element.is_main ? <label>Yes</label> : <label>No</label>}</TableCell>
                                             <TableCell align="left"> <IconButton aria-label="delete" color="secondary" onClick={() => confirmDialog(element)}><DeleteIcon /></IconButton></TableCell>
-                                            <TableCell align="left"> <IconButton aria-label="delete" color="success" onClick={()=>handleOpen(element)}><EditIcon /></IconButton></TableCell>
+                                            <TableCell align="left"> <IconButton aria-label="delete" color="success" onClick={() => handleOpen(element)}><EditIcon /></IconButton></TableCell>
                                         </TableRow>
                                     )
                                 })
@@ -268,6 +301,13 @@ const CategoryTable = ({ list, getData, isEmpty }) => {
                                     </Select>
                                 </FormControl>
                             </Grid>
+                            <Grid item md={12} lg={12}>
+                                <label htmlFor="contained-button-file3">
+                                    <Input accept="image/*" id="contained-button-file3" type="file" onChange={handleFileInput} />
+                                    <FileBrowse component="span" image={image}>
+                                    </FileBrowse>
+                                </label>
+                            </Grid>
                         </Grid>
 
                         <Grid container spacing={2}>
@@ -278,23 +318,23 @@ const CategoryTable = ({ list, getData, isEmpty }) => {
 
                             <Grid item md={12} lg={12}>
                                 {
-                                <LoadingButton
-                                    loading={isLoading}
-                                    loadingPosition="start"
-                                    startIcon={<EditIcon />}
-                                    variant="contained"
-                                    fullWidth={true}
-                                    onClick={handleClick}
-                                >
-                                    {isLoading ? <p style={{ color: "white" }}>Please wait...</p> : <p style={{ color: "white" }}>Edit</p>}
-                                </LoadingButton>
+                                    <LoadingButton
+                                        loading={isLoading}
+                                        loadingPosition="start"
+                                        startIcon={<EditIcon />}
+                                        variant="contained"
+                                        fullWidth={true}
+                                        onClick={handleClick}
+                                    >
+                                        {isLoading ? <p style={{ color: "white" }}>Please wait...</p> : <p style={{ color: "white" }}>Edit</p>}
+                                    </LoadingButton>
 
                                 }
 
                             </Grid>
                         </Grid>
 
-                       
+
 
                     </Stack>
                 </Box>

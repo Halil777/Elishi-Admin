@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const BASE_URL = "http://10.192.168.26:5010/api/admin/";
+export const BASE_URL = "http://localhost:5010/api/admin/";
 const AxiosInstance = axios.create({
     baseURL: BASE_URL,
     timeout: 100000,
@@ -19,6 +19,6 @@ const AxiosInstanceFormData = axios.create({
     }
 })
 
-export const server_ip = "http://10.192.168.26:5010";
+export const server_ip = "http://localhost:5010";
 export {AxiosInstance};
 export {AxiosInstanceFormData};

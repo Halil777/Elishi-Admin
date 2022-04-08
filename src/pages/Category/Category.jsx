@@ -19,10 +19,15 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ReactLoading from 'react-loading';
 import { showError, showSuccess, showWarning } from '../Alert/Alert.mjs';
+import FileBrowse from '../FileBrowse/FileBrowse';
+import { styled } from '@mui/material/styles';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 
+const Input = styled('input')({
+  display: 'none',
+});
 
 const style = {
   position: 'absolute',
@@ -49,10 +54,16 @@ function Category() {
   const [name_en,setNameEn]= useState(''); 
   const [status,setStatus] = useState(1);
   const [isMain,setMain] = useState(false);
-
+  const [image, setImage] = useState('Select image');
+  const [selectedFile, setFile] = useState('');
 
   const handleClick = () => {
     addCategory();
+  }
+
+  const handleFileInput = (e) => {
+    setImage(e.target.files[0].name);
+    setFile(e.target.files[0]);
   }
 
   const clearInput= () => {
@@ -60,22 +71,24 @@ function Category() {
     setNameRu('');
     setNameEn('');
     setStatus(1);
+    setImage('Select image');
+    setFile('');
     setMain(false);
   }
 
   const addCategory = () => {
-    if(name_tm=='' || name_ru=='' || name_en == ''){
+    if(name_tm=='' || name_ru=='' || name_en == '' || selectedFile==''){
       showWarning("Enter all required information");
         return;
     }
     setLoading(!isLoading);
-    const category = {
-      nameTM:name_tm,
-      nameRU:name_ru,
-      nameEN:name_en,
-      status:status,
-      isMain:isMain
-    }
+    let category=new FormData();
+    category.append('nameTM',name_tm);
+    category.append('nameRU',name_ru);
+    category.append('nameEN',name_en);
+    category.append('status',status);
+    category.append('isMain',isMain);
+    category.append('file',selectedFile);
 
     AxiosInstance.post('/category/add-category',category)
     .then(response=>{
@@ -233,6 +246,13 @@ function Category() {
                     </MenuItem>
                   </Select>
                 </FormControl>
+              </Grid>
+              <Grid item md={12} lg={12}>
+                <label htmlFor="contained-button-file3">
+                  <Input accept="image/*" id="contained-button-file3" type="file" onChange={handleFileInput} />
+                  <FileBrowse component="span" image={image}>
+                  </FileBrowse>
+                </label>
               </Grid>
             </Grid>
 
