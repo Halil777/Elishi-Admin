@@ -20,6 +20,8 @@ import { showError, showSuccess, showWarning } from '../Alert/Alert.mjs';
 import FileBrowse from '../FileBrowse/FileBrowse';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import UrlGuide from '../Guide/UrlGuide';
+import {useTranslation} from '../../components/sidebar/Sidebar';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -38,7 +40,8 @@ const style = {
     p: 4,
     overflow: 'scroll',
     height: '90%',
-    display: 'block'
+    display: 'block',
+    overflowX: 'hidden'
 };
 
 const Input = styled('input')({
@@ -46,6 +49,7 @@ const Input = styled('input')({
 });
 
 function Banners() {
+    const {t} = useTranslation();
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -113,13 +117,13 @@ function Banners() {
         AxiosInstanceFormData.post('/banner/add-banner',formdata)
         .then(response => {
             if (!response.data.error) {
-                showSuccess("Successfully added!");
+                showSuccess(t("Successfully added!"));
                 setLoading(false);
                 clearInput();
                 handleClose();
                 getBanners()
             } else {
-                showError("Something went wrong!");
+                showError(t("Something went wrong!"));
                 setLoading(false);
             }
         })
@@ -144,7 +148,7 @@ function Banners() {
                     setEmptyPage(false);
                 }
             } else {
-                showError("Something went wrong!");
+                showError(t("Something went wrong!"));
                 if (banners.length == 0) {
                     setEmptyPage(true);
                 }
@@ -168,7 +172,7 @@ function Banners() {
             >
                 <Grid container spacing={0}>
                     <Grid item lg={6}>
-                        <h2>Banners</h2>
+                        <h2>{t('Banners')}</h2>
                     </Grid>
                     <Grid item lg={6}>
                         <Stack
@@ -176,7 +180,7 @@ function Banners() {
                             spacing={4}
                             justifyContent={'flex-end'}
                         >
-                            <Button variant="outlined" onClick={handleOpen} startIcon={<AddIcon />}>Add Banner</Button>
+                            <Button variant="outlined" onClick={handleOpen} startIcon={<AddIcon />}>{t('Add Banner')}</Button>
                         </Stack>
                     </Grid>
                 </Grid>
@@ -233,26 +237,26 @@ function Banners() {
                         <Grid container spacing={1}>
                             <Grid item md={12} lg={6}>
                                 <FormControl fullWidth>
-                                    <InputLabel id="demo-multiple-name-label">Status</InputLabel>
+                                    <InputLabel id="demo-multiple-name-label">{t('Status')}</InputLabel>
                                     <Select
                                         labelId="demo-multiple-name-label"
                                         id="demo-multiple-name"
                                         value={status}
                                         onChange={e=>setStatus(e.target.value)}
-                                        input={<OutlinedInput label="Status" />}
+                                        input={<OutlinedInput label={t('Status')} />}
                                     >
                                         <MenuItem
                                             key="Active"
                                             value="1"
                                         >
-                                            Active
+                                            {t('Active')}
                                         </MenuItem>
 
                                         <MenuItem
                                             key="Passive"
                                             value="0"
                                         >
-                                            Passive
+                                            {t('Passive')}
                                         </MenuItem>
                                     </Select>
                                 </FormControl>
@@ -263,7 +267,7 @@ function Banners() {
                                     fullWidth
                                     required
                                     id="outlined-required"
-                                    label="Order"
+                                    label={t('Order')}
                                     type="number"
                                     value={order}
                                     onChange={e=>setOrder(e.target.value)}
@@ -272,13 +276,14 @@ function Banners() {
                             </Grid>
                         </Grid>
 
+                        <UrlGuide/>
                         <Grid container spacing={1}>
                             <Grid item md={12} lg={12}>
                                 <TextField
                                     fullWidth
                                     id="filled-textarea"
-                                    label="URL"
-                                    placeholder="Enter URL..."
+                                    label={t("URL")}
+                                    placeholder={t('Enter URL...')}
                                     multiline
                                     rows={4}
                                     value={siteUrl}
@@ -294,10 +299,11 @@ function Banners() {
                                         loadingPosition="start"
                                         startIcon={<AddIcon />}
                                         variant="contained"
+                                        color="primary"
                                         fullWidth={true}
                                         onClick={handleClick}
                                     >
-                                        {isLoading ? <p style={{ color: "white" }}>Please wait...</p> : <p style={{ color: "white" }}>Add</p>}
+                                        {isLoading ? <Typography variant="action">{t('Please wait...')}</Typography> : <Typography variant="action">{t('Add')}</Typography>}
                                     </LoadingButton>
 
                                 }

@@ -1,108 +1,13 @@
-h1,h2,h3,h4,h5,h6,p,label{
-  font-family:'regularFont';
+.side {
+  width: 250px;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 
-/* The side navigation menu */
-.container{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    align-items: stretch;
-    align-content: stretch;
+.main {
+  width: calc(100vw - 250px);
+  left: 250px;
+  position: relative;
+  padding:20px;
 }
-/* width */
-.sidebar::-webkit-scrollbar {
-  width: 5px;
-  height:1px;
-  border-radius:12px;
-}
-
-/* Track */
-.sidebar::-webkit-scrollbar-track {
-  background: #00000000;
-}
-
-/* Handle */
-.sidebar::-webkit-scrollbar-thumb {
-  background: #344fc5;
-  border-radius:12px;
-  height:12px;
-}
-.sidebarCon{
-  background: #4361ee;
-}
-/* Handle on hover */
-.sidebar::-webkit-scrollbar-thumb:hover {
-  background: #344fc5;
-}
-.space{
-  height: 100px;
-}
-.sidebar {
-    margin: 0;
-    padding:12px;
-    background: #4361ee;
-    height:100vh;
-    overflow: auto;
-  }
-
-  .header{
-    background-color: #344fc5;
-  }
-  
-  /* Sidebar links */
-  .sidebar .sidebar-item {
-    display: flex;
-    color: white;
-    padding-left: 16px;
-    padding-right: 16px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    text-decoration: none;
-    align-items: center;
-    font-family: 'regularFont';
-    border-radius:6px;
-    margin: 12px;
-  }
-  
-  /* Active/current link */
-  .sidebar .sidebar-item.active {
-    background-color: #3a0ca3;
-    color: white;
-    font-family: 'mediumFont';
-  }
-  
-  /* Links on mouse-over */
-  .sidebar a:hover:not(.active) {
-    background-color: #344fc5;
-    color: white;
-  }
-
-  .sidebar .sidebar-item-icon{
-    color: white;
-    padding:4px;
-  }
-  
-  /* Page content. The value of the margin-left property should match the value of the sidebar's width property */
-  .content {
-  }
-  
-  /* On screens that are less than 700px wide, make the sidebar into a topbar */
-  @media screen and (max-width: 700px) {
-    .sidebar {
-      width: 100%;
-      height: auto;
-      position: relative;
-    }
-    .sidebar a {float: left;}
-    div.content {margin-left: 0;}
-  }
-  
-  /* On screens that are less than 400px, display the bar vertically, instead of horizontally */
-  @media screen and (max-width: 400px) {
-    .sidebar a {
-      text-align: center;
-      float: none;
-    }
-  }

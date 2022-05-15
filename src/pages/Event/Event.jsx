@@ -21,6 +21,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import ReactLoading from 'react-loading';
 import { showError, showSuccess, showWarning } from '../Alert/Alert.mjs';
 import { event_types } from '../Constants/Constant.mjs';
+import {useTranslation} from '../../components/sidebar/Sidebar';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -43,10 +44,12 @@ const style = {
   p: 4,
   overflow: 'scroll',
   height: '90%',
-  display: 'block'
+  display: 'block',
+  overflowX: 'hidden'
 };
 
 function Event() {
+  const {t} = useTranslation();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -110,7 +113,7 @@ function Event() {
             setEmpty(false);
           }
         } else {
-          showError("Something went wrong!");
+          showError(t("Something went wrong!"));
           if (typeof list.length === 'undefined' || list.length == 0) {
             setEmpty(true);
           }
@@ -146,13 +149,13 @@ function Event() {
     AxiosInstanceFormData.post('/event/add-event',formData)
     .then(response => {
       if (!response.data.error) {
-          showSuccess("Successfully added!");
+          showSuccess(t("Successfully added!"));
           setLoading(false);
           clearInput();
           handleClose();
           getData();
       } else {
-          showError("Something went wrong!");
+          showError(t("Something went wrong!"));
           setLoading(false);
       }
     })
@@ -199,7 +202,7 @@ function Event() {
         if (!response.data.error) {
           setGoList(response.data.body);
         } else {
-          showError("Something went wrong!");
+          showError(t("Something went wrong!"));
 
         }
       })
@@ -215,7 +218,7 @@ function Event() {
         if (!response.data.error) {
           setGoList(response.data.body);
         } else {
-          showError("Something went wrong!");
+          showError(t("Something went wrong!"));
 
         }
       })
@@ -231,7 +234,7 @@ function Event() {
         if (!response.data.error) {
           setGoList(response.data.body);
         } else {
-          showError("Something went wrong!");
+          showError(t("Something went wrong!"));
 
         }
       })
@@ -248,7 +251,7 @@ function Event() {
         if (!response.data.error) {
           setGoList(response.data.body);
         } else {
-          showError("Something went wrong!");
+          showError(t("Something went wrong!"));
         }
       })
       .catch(error => {
@@ -267,7 +270,7 @@ function Event() {
       >
         <Grid container spacing={0}>
           <Grid item lg={6}>
-            <h2>Events</h2>
+            <h2>{t('Events')}</h2>
           </Grid>
           <Grid item lg={6}>
             <Stack
@@ -275,7 +278,7 @@ function Event() {
               spacing={4}
               justifyContent={'flex-end'}
             >
-              <Button variant="outlined" onClick={handleOpen} startIcon={<AddIcon />}>Add event</Button>
+              <Button variant="outlined" onClick={handleOpen} startIcon={<AddIcon />}>{t('Add event')}</Button>
             </Stack>
           </Grid>
         </Grid>
@@ -312,7 +315,7 @@ function Event() {
                   fullWidth
                   required
                   id="outlined-required"
-                  label="Event title turkmen"
+                  label={t('Event title turkmen')}
                   defaultValue=""
                   value={titleTM}
                   onChange={e=>setTitleTM(e.target.value)}
@@ -323,7 +326,7 @@ function Event() {
                   fullWidth
                   required
                   id="outlined-required"
-                  label="Event title russian"
+                  label={t('Event title russian')}
                   defaultValue=""
                   value={titleRU}
                   onChange={e=>setTitleRU(e.target.value)}
@@ -337,7 +340,7 @@ function Event() {
                   fullWidth
                   required
                   id="outlined-required"
-                  label="Event title english"
+                  label={t('Event title english')}
                   defaultValue=""
                   value={titleEN}
                   onChange={e=>setTitleEN(e.target.value)}
@@ -345,26 +348,26 @@ function Event() {
               </Grid>
               <Grid item md={12} lg={6}>
                 <FormControl fullWidth>
-                  <InputLabel id="demo-multiple-name-label">Status</InputLabel>
+                  <InputLabel id="demo-multiple-name-label">{t('Status')}</InputLabel>
                   <Select
                     labelId="demo-multiple-name-label"
                     id="demo-multiple-name"
                     value={status}
                     onChange={e=>setStatus(e.target.value)}
-                    input={<OutlinedInput label="Status" />}
+                    input={<OutlinedInput label={t('Status')} />}
                   >
                     <MenuItem
                       key="Active"
                       value="1"
                     >
-                      Active
+                      {t('Active')}
                     </MenuItem>
 
                     <MenuItem
                       key="Passive"
                       value="0"
                     >
-                      Passive
+                      {t('Passive')}
                     </MenuItem>
                   </Select>
                 </FormControl>
@@ -387,14 +390,14 @@ function Event() {
                       key="Active"
                       value="1"
                     >
-                      Yes
+                      {t('Yes')}
                     </MenuItem>
 
                     <MenuItem
                       key="Passive"
                       value="0"
                     >
-                      No
+                      {t('No')}
                     </MenuItem>
                   </Select>
                 </FormControl>
@@ -404,7 +407,7 @@ function Event() {
                 <TextField
                   fullWidth
                   id="outlined-required"
-                  label="Event url"
+                  label={t('Event url')}
                   defaultValue=""
                   value={url}
                   onChange={e=>setUrl(e.target.value)}
@@ -414,13 +417,13 @@ function Event() {
 
               <Grid item md={12} lg={6}>
                 <FormControl fullWidth>
-                  <InputLabel id="demo-multiple-name-label">Event type</InputLabel>
+                  <InputLabel id="demo-multiple-name-label">{t('Event type')}</InputLabel>
                   <Select
                     labelId="demo-multiple-name-label"
                     id="demo-multiple-name"
                     value={event_type}
                     onChange={e => setEventType(e.target.value)}
-                    input={<OutlinedInput label="Event type" />}
+                    input={<OutlinedInput label={t('Event type')} />}
                   >
                     {
                       event_types.map((type, i) => {
@@ -464,21 +467,21 @@ function Event() {
                                   key={go.id}
                                   value={go.id}
                                 >
-                                  {go.sub_category_name_tm}
+                                  {go.sub_category_name_ru}
                                 </MenuItem> :
                                 event_type == 'category' ?
                                   <MenuItem
                                     key={go.id}
                                     value={go.id}
                                   >
-                                    {go.category_name_tm}
+                                    {go.category_name_ru}
                                   </MenuItem> :
                                   event_type == 'constant' ?
                                     <MenuItem
                                       key={go.id}
                                       value={go.id}
                                     >
-                                      {go.titleTM}
+                                      {go.titleRU}
                                     </MenuItem> : null
                           )
                         })
@@ -515,10 +518,11 @@ function Event() {
                     loadingPosition="start"
                     startIcon={<AddIcon />}
                     variant="contained"
+                    color="primary"
                     fullWidth={true}
                     onClick={handleClick}
                   >
-                    {isLoading ? <p style={{ color: "white" }}>Please wait...</p> : <p style={{ color: "white" }}>Add</p>}
+                    {isLoading ? <Typography variant="action">{t('Please wait...')}</Typography> : <Typography variant="action">{t('Add')}</Typography>}
                   </LoadingButton>
 
                 }

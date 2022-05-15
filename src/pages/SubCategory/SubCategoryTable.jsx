@@ -12,7 +12,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import { confirm } from "react-confirm-box";
 import './subcategorytable.css';
-import { Modal, Stack } from '@mui/material';
+import { Modal, Stack, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { Box } from '@mui/system';
 import CloseIcon from '@mui/icons-material/Close';
@@ -36,6 +36,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ReactLoading from 'react-loading';
 import { showError, showSuccess, showWarning } from '../Alert/Alert.mjs';
+import {useTranslation} from '../../components/sidebar/Sidebar';
 
 const Input = styled('input')({
     display: 'none',
@@ -47,17 +48,19 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: '50%',
-    bgcolor: 'white',
+    bgcolor: 'background.paper',
     border: '2px solid transparent',
     borderRadius: '12px',
     boxShadow: 24,
     p: 4,
     overflow: 'scroll',
     height: '90%',
-    display: 'block'
+    display: 'block',
+    overflowX: 'hidden'
 };
 
 const SubCategoryTable = ({ list, isEmpty, categoryList, getData }) => {
+    const {t} = useTranslation();
     const [open, setOpen] = React.useState(false);
     const handleClose = () => setOpen(false);
     const [image, setImage] = useState('Select image');
@@ -171,12 +174,12 @@ const SubCategoryTable = ({ list, isEmpty, categoryList, getData }) => {
                         <TableHead>
                             <TableRow>
                                 <TableCell>ID</TableCell>
-                                <TableCell align="left">Sub Name TM</TableCell>
-                                <TableCell align="left">Image</TableCell>
-                                <TableCell align="left">Category</TableCell>
-                                <TableCell align="left">Status</TableCell>
-                                <TableCell align="left">DELETE</TableCell>
-                                <TableCell align="left">EDIT</TableCell>
+                                <TableCell align="left">{t('Sub Name TM')}</TableCell>
+                                <TableCell align="left">{t('Image')}</TableCell>
+                                <TableCell align="left">{t('Category')}</TableCell>
+                                <TableCell align="left">{t('Status')}</TableCell>
+                                <TableCell align="left">{t('DELETE')}</TableCell>
+                                <TableCell align="left">{t('EDIT')}</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -196,7 +199,7 @@ const SubCategoryTable = ({ list, isEmpty, categoryList, getData }) => {
                                                     effect="black-and-white"
                                                     src={server_ip + "/" + element.image} className="img" /></TableCell>
                                             <TableCell align="left">{element.category_name_tm}</TableCell>
-                                            <TableCell align="left">{(element.status == '0' || element.status === '') ? <label>Passive</label> : <label>Active</label>}</TableCell>
+                                            <TableCell align="left">{(element.status == '0' || element.status === '') ? <label>{t('Passive')}</label> : <label>{t('Active')}</label>}</TableCell>
                                             <TableCell align="left"> <IconButton aria-label="delete" color="secondary" onClick={() => confirmDialog(element)}><DeleteIcon /></IconButton></TableCell>
                                             <TableCell align="left"> <IconButton aria-label="delete" color="success" onClick={() => handleOpen(element)}><EditIcon /></IconButton></TableCell>
                                         </TableRow>
@@ -239,7 +242,7 @@ const SubCategoryTable = ({ list, isEmpty, categoryList, getData }) => {
                                     fullWidth
                                     required
                                     id="outlined-required"
-                                    label="Sub Category name turkmen"
+                                    label={t('Sub Category name turkmen')}
                                     defaultValue=""
                                     value={name_tm}
                                     onChange={e => setNameTm(e.target.value)}
@@ -250,7 +253,7 @@ const SubCategoryTable = ({ list, isEmpty, categoryList, getData }) => {
                                     fullWidth
                                     required
                                     id="outlined-required"
-                                    label="Sub Category name russian"
+                                    label={t('Sub Category name russian')}
                                     defaultValue=""
                                     value={name_ru}
                                     onChange={e => setNameRu(e.target.value)}
@@ -264,7 +267,7 @@ const SubCategoryTable = ({ list, isEmpty, categoryList, getData }) => {
                                     fullWidth
                                     required
                                     id="outlined-required"
-                                    label="Sub Category name english"
+                                    label={t('Sub Category name english')}
                                     defaultValue=""
                                     value={name_en}
                                     onChange={e => setNameEn(e.target.value)}
@@ -272,26 +275,26 @@ const SubCategoryTable = ({ list, isEmpty, categoryList, getData }) => {
                             </Grid>
                             <Grid item md={12} lg={6}>
                                 <FormControl fullWidth>
-                                    <InputLabel id="demo-multiple-name-label">Status</InputLabel>
+                                    <InputLabel id="demo-multiple-name-label">{t('Status')}</InputLabel>
                                     <Select
                                         value={status}
                                         onChange={e => setStatus(e.target.value)}
                                         labelId="demo-multiple-name-label"
                                         id="demo-multiple-name"
-                                        input={<OutlinedInput label="Status" />}
+                                        input={<OutlinedInput label={t('Status')} />}
                                     >
                                         <MenuItem
                                             key="Active"
                                             value="1"
                                         >
-                                            Active
+                                            {t('Active')}
                                         </MenuItem>
 
                                         <MenuItem
                                             key="Passive"
                                             value="0"
                                         >
-                                            Passive
+                                            {t('Passive')}
                                         </MenuItem>
                                     </Select>
                                 </FormControl>
@@ -302,19 +305,19 @@ const SubCategoryTable = ({ list, isEmpty, categoryList, getData }) => {
 
                             <Grid item md={12} lg={6}>
                                 <FormControl fullWidth>
-                                    <InputLabel id="demo-multiple-name-label">Category</InputLabel>
+                                    <InputLabel id="demo-multiple-name-label">{t('Category')}</InputLabel>
                                     <Select
                                         value={category}
                                         onChange={e => setCategory(e.target.value)}
                                         labelId="demo-multiple-name-label"
                                         id="demo-multiple-name"
-                                        input={<OutlinedInput label="Status" />}
+                                        input={<OutlinedInput label={t('Category')} />}
                                     >
                                         {
                                             categoryList?.map((element, i) => {
                                                 return (
                                                     <MenuItem key={i} value={element.id}>
-                                                        {element.category_name_tm}
+                                                        {element.category_name_ru}
                                                     </MenuItem>
                                                 )
                                             })
@@ -340,10 +343,11 @@ const SubCategoryTable = ({ list, isEmpty, categoryList, getData }) => {
                                         loadingPosition="start"
                                         startIcon={<EditIcon />}
                                         variant="contained"
+                                        color="primary"
                                         fullWidth={true}
                                         onClick={handleClick}
                                     >
-                                        {isLoading ? <p style={{ color: "white" }}>Please wait...</p> : <p style={{ color: "white" }}>Edit</p>}
+                                        {isLoading ? <Typography variant="action">{t('Please wait...')}</Typography> : <Typography variant="action">{t('Edit')}</Typography>}
                                     </LoadingButton>
 
                                 }

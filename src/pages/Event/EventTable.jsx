@@ -12,7 +12,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import { confirm } from "react-confirm-box";
 import './event_table.css';
-import { Modal, Stack } from '@mui/material';
+import { Modal, Stack, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { Box } from '@mui/system';
 import CloseIcon from '@mui/icons-material/Close';
@@ -38,6 +38,7 @@ import { showError, showSuccess, showWarning } from '../Alert/Alert.mjs';
 import { event_types } from '../Constants/Constant.mjs';
 import Loading from '../Loading/Loading';
 import Empty from '../Empty/Empty';
+import {useTranslation} from '../../components/sidebar/Sidebar';
 
 const Input = styled('input')({
     display: 'none',
@@ -49,17 +50,19 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: '100%',
-    bgcolor: 'white',
+    bgcolor: 'background.paper',
     border: '2px solid transparent',
     borderRadius: '12px',
     boxShadow: 24,
     p: 4,
     overflow: 'scroll',
     height: '100%',
-    display: 'block'
+    display: 'block',
+    overflowX: 'hidden'
 };
 
 function EventTable({list,getData,isEmpty}) {
+    const {t} = useTranslation();
     const [categoryList, setCategoryList] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20])
     const [open, setOpen] = React.useState(false);
     
@@ -114,7 +117,7 @@ function EventTable({list,getData,isEmpty}) {
       setTitleRU(element.title_ru);
       setTitleEN(element.title_en);
       setStatus(element.status);
-      setIsMain(element.isMain);
+      setIsMain(element.is_main);
       setUrl(element.url);
       setImage(element.event_image);
       setFile('');
@@ -153,7 +156,7 @@ function EventTable({list,getData,isEmpty}) {
                     showSuccess("Successfully deleted!");
                     getEventProducts(id);
                 } else {
-                    showError("Something went wrong!");
+                    showError(t("Something went wrong!"));
                 }
             })
             .catch(err => {
@@ -165,10 +168,10 @@ function EventTable({list,getData,isEmpty}) {
         AxiosInstance.delete('/event/delete-event/' + element.id + "?filename=" + element.event_image)
             .then(response => {
                 if (!response.data.error) {
-                    showSuccess("Successfully deleted!");
+                    showSuccess(t("Successfully deleted!"));
                     getData();
                 } else {
-                    showError("Something went wrong!");
+                    showError(t("Something went wrong!"));
                 }
             })
             .catch(err => {
@@ -199,13 +202,13 @@ function EventTable({list,getData,isEmpty}) {
         AxiosInstanceFormData.put('/event/update-event',formData)
         .then(response => {
           if (!response.data.error) {
-              showSuccess("Successfully updated!");
+              showSuccess(t("Successfully updated!"));
               setLoading(false);
               clearInput();
               handleClose();
               getData();
           } else {
-              showError("Something went wrong!");
+              showError(t("Something went wrong!"));
               setLoading(false);
           }
         })
@@ -288,7 +291,7 @@ function EventTable({list,getData,isEmpty}) {
             if (!response.data.error) {
               setGoList(response.data.body);
             } else {
-              showError("Something went wrong!");
+              showError(t("Something went wrong!"));
     
             }
           })
@@ -305,7 +308,7 @@ function EventTable({list,getData,isEmpty}) {
             if (!response.data.error) {
               setGoList(response.data.body);
             } else {
-              showError("Something went wrong!");
+              showError(t("Something went wrong!"));
             }
           })
           .catch(error => {
@@ -319,7 +322,7 @@ function EventTable({list,getData,isEmpty}) {
           if (!response.data.error) {
             setEventProducts(response.data.body);
           } else {
-            showError("Something went wrong!");
+            showError(t("Something went wrong!"));
           }
         })
         .catch(error => {
@@ -348,12 +351,12 @@ function EventTable({list,getData,isEmpty}) {
                     <TableHead>
                         <TableRow>
                             <TableCell>ID</TableCell>
-                            <TableCell align="left">Event title TM</TableCell>
-                            <TableCell align="left">Image</TableCell>
-                            <TableCell align="left">Type</TableCell>
-                            <TableCell align="left">Status</TableCell>
-                            <TableCell align="left">DELETE</TableCell>
-                            <TableCell align="left">EDIT</TableCell>
+                            <TableCell align="left">{t('Event title TM')}</TableCell>
+                            <TableCell align="left">{t('Image')}</TableCell>
+                            <TableCell align="left">{t('Type')}</TableCell>
+                            <TableCell align="left">{t('Status')}</TableCell>
+                            <TableCell align="left">{t('DELETE')}</TableCell>
+                            <TableCell align="left">{t('EDIT')}</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -415,7 +418,7 @@ function EventTable({list,getData,isEmpty}) {
                   fullWidth
                   required
                   id="outlined-required"
-                  label="Event title turkmen"
+                  label={t("Event title turkmen")}
                   defaultValue=""
                   value={titleTM}
                   onChange={e=>setTitleTM(e.target.value)}
@@ -426,7 +429,7 @@ function EventTable({list,getData,isEmpty}) {
                   fullWidth
                   required
                   id="outlined-required"
-                  label="Event title russian"
+                  label={t("Event title russian")}
                   defaultValue=""
                   value={titleRU}
                   onChange={e=>setTitleRU(e.target.value)}
@@ -440,7 +443,7 @@ function EventTable({list,getData,isEmpty}) {
                   fullWidth
                   required
                   id="outlined-required"
-                  label="Event title english"
+                  label={t("Event title english")}
                   defaultValue=""
                   value={titleEN}
                   onChange={e=>setTitleEN(e.target.value)}
@@ -448,26 +451,26 @@ function EventTable({list,getData,isEmpty}) {
               </Grid>
               <Grid item md={12} lg={6}>
                 <FormControl fullWidth>
-                  <InputLabel id="demo-multiple-name-label">Status</InputLabel>
+                  <InputLabel id="demo-multiple-name-label">{t('Status')}</InputLabel>
                   <Select
                     labelId="demo-multiple-name-label"
                     id="demo-multiple-name"
                     value={status}
                     onChange={e=>setStatus(e.target.value)}
-                    input={<OutlinedInput label="Status" />}
+                    input={<OutlinedInput label={t('Status')} />}
                   >
                     <MenuItem
                       key="Active"
                       value="1"
                     >
-                      Active
+                      {t('Active')}
                     </MenuItem>
 
                     <MenuItem
                       key="Passive"
                       value="0"
                     >
-                      Passive
+                      {t('Passive')}
                     </MenuItem>
                   </Select>
                 </FormControl>
@@ -478,26 +481,26 @@ function EventTable({list,getData,isEmpty}) {
 
               <Grid item md={12} lg={6}>
                 <FormControl fullWidth>
-                  <InputLabel id="demo-multiple-name-label">Is Main</InputLabel>
+                  <InputLabel id="demo-multiple-name-label">{t('Is Main')}</InputLabel>
                   <Select
                     labelId="demo-multiple-name-label"
                     id="demo-multiple-name"
                     value={isMain}
                     onChange={e=>setIsMain(e.target.value)}
-                    input={<OutlinedInput label="is main" />}
+                    input={<OutlinedInput label={t('Is Main')} />}
                   >
                     <MenuItem
                       key="Active"
                       value="1"
                     >
-                      Yes
+                      {t('Yes')}
                     </MenuItem>
 
                     <MenuItem
                       key="Passive"
                       value="0"
                     >
-                      No
+                      {t('No')}
                     </MenuItem>
                   </Select>
                 </FormControl>
@@ -507,7 +510,7 @@ function EventTable({list,getData,isEmpty}) {
                 <TextField
                   fullWidth
                   id="outlined-required"
-                  label="Event url"
+                  label={t("Event url")}
                   defaultValue=""
                   value={url}
                   onChange={e=>setUrl(e.target.value)}
@@ -567,21 +570,21 @@ function EventTable({list,getData,isEmpty}) {
                                   key={go.id}
                                   value={go.id}
                                 >
-                                  {go.sub_category_name_tm}
+                                  {go.sub_category_name_ru}
                                 </MenuItem> :
                                 event_type == 'category' ?
                                   <MenuItem
                                     key={go.id}
                                     value={go.id}
                                   >
-                                    {go.category_name_tm}
+                                    {go.category_name_ru}
                                   </MenuItem> :
                                   event_type == 'constant' ?
                                     <MenuItem
                                       key={go.id}
                                       value={go.id}
                                     >
-                                      {go.titleTM}
+                                      {go.titleRU}
                                     </MenuItem> : null
                           )
                         })
@@ -617,10 +620,11 @@ function EventTable({list,getData,isEmpty}) {
                     loadingPosition="start"
                     startIcon={<EditIcon />}
                     variant="contained"
+                    color="primary"
                     fullWidth={true}
                     onClick={handleClick}
                   >
-                    {isLoading ? <p style={{ color: "white" }}>Please wait...</p> : <p style={{ color: "white" }}>Edit</p>}
+                    {isLoading ? <Typography variant="action">{t('Please wait...')}</Typography> : <Typography variant="action">{t('Edit')}</Typography>}
                   </LoadingButton>
 
                 }
@@ -632,19 +636,19 @@ function EventTable({list,getData,isEmpty}) {
   {/* Products table */}
   {eventProducts.length<=0?null:
              <Grid item md={12} lg={12}>
-               <center><p>Event products</p></center>
+               <center><p>{t('Event products')}</p></center>
                <br/>
                <TableContainer component={Paper}>
                         <Table aria-label="simple table">
                             <TableHead>
                                 <TableRow>
                                     <TableCell>ID</TableCell>
-                                    <TableCell align="left">Product image</TableCell>
-                                    <TableCell align="left">Product name</TableCell>
-                                    <TableCell align="left">Price</TableCell>
-                                    <TableCell align="left">Size</TableCell>
-                                    <TableCell align="left">Status</TableCell>
-                                    <TableCell align="left">DELETE</TableCell>
+                                    <TableCell align="left">{t('Product image')}</TableCell>
+                                    <TableCell align="left">{t('Product name')}</TableCell>
+                                    <TableCell align="left">{t('Price')}</TableCell>
+                                    <TableCell align="left">{t('Size')}</TableCell>
+                                    <TableCell align="left">{t('Status')}</TableCell>
+                                    <TableCell align="left">{t('DELETE')}</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useRef } from 'react'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -28,6 +28,10 @@ import Loading from '../Loading/Loading';
 import Empty from '../Empty/Empty';
 import { AxiosInstance } from '../Axios/AxiosInstance';
 import { showError, showSuccess, showWarning } from '../Alert/Alert.mjs';
+import Typography from '@mui/material/Typography';
+import JoditEditor from "jodit-react";
+import './constant.css';
+import {useTranslation} from '../../components/sidebar/Sidebar';
 
 const style = {
     position: 'absolute',
@@ -35,20 +39,36 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: '100%',
-    bgcolor: 'white',
+    bgcolor: 'background.paper',
     border: '2px solid transparent',
     borderRadius: '12px',
     boxShadow: 24,
     p: 4,
     overflow: 'scroll',
     height: '100%',
-    display: 'block'
+    display: 'block',
+    overflowX: 'hidden'
 };
 
 const ConstantTable = ({ constants, getConstants, isEmptyPage }) => {
+    const {t} = useTranslation();
+    const editor = useRef(null)
+
+    const config = {
+        readonly: false,
+        placeholder: 'Start typings...',
+        height: 400
+    };
+
+    const darkConfig = {
+        readonly: false,
+        placeholder: 'Start typings...',
+        height: 400,
+        theme: 'dark'
+    };
     const [categoryList, setCategoryList] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20])
     const [open, setOpen] = React.useState(false);
-    
+
     const handleClose = () => setOpen(false);
 
     const [isLoading, setLoading] = useState(false);
@@ -84,7 +104,7 @@ const ConstantTable = ({ constants, getConstants, isEmptyPage }) => {
         setType(element.page_type);
         setId(element.id);
     }
-    const clearInput=()=>{
+    const clearInput = () => {
         setTitleTM('');
         setTitleRU('');
         setTitleEN('');
@@ -96,46 +116,46 @@ const ConstantTable = ({ constants, getConstants, isEmptyPage }) => {
         setContentDarkEN('');
         setType('');
         setId('');
-      }
-    
-      const updateConstant = () => {
-        if(titleTM=='' || titleRU=='' || titleEN=='' || type=='' || contentLightTM=='' || contentLightRU=='' || contentLightEN=='' || contentDarkTM=='' || contentDarkRU=='' || contentDarkEN==''){
-          showWarning("Please enter required informations");
-          return;
+    }
+
+    const updateConstant = () => {
+        if (titleTM == '' || titleRU == '' || titleEN == '' || type == '' || contentLightTM == '' || contentLightRU == '' || contentLightEN == '' || contentDarkTM == '' || contentDarkRU == '' || contentDarkEN == '') {
+            showWarning("Please enter required informations");
+            return;
         }
         setLoading(true);
         const body = {
-          titleTM:titleTM,
-          titleRU:titleRU,
-          titleEN:titleEN,
-          lightTM:contentLightTM,
-          lightRU:contentLightRU,
-          lightEN:contentLightEN,
-          darkTM:contentDarkTM,
-          darkRU:contentDarkRU,
-          darkEN:contentDarkEN,
-          type:type,
-          id:id
+            titleTM: titleTM,
+            titleRU: titleRU,
+            titleEN: titleEN,
+            lightTM: contentLightTM,
+            lightRU: contentLightRU,
+            lightEN: contentLightEN,
+            darkTM: contentDarkTM,
+            darkRU: contentDarkRU,
+            darkEN: contentDarkEN,
+            type: type,
+            id: id
         }
-        AxiosInstance.put('/constant-page/update-constant',body)
-        .then(response => {
-          if (!response.data.error) {
-              showSuccess("Successfully updated!");
-              setLoading(false);
-              clearInput();
-              handleClose();
-              getConstants()
-          } else {
-              showError("Something went wrong!");
-              setLoading(false);
-          }
-      })
-      .catch(error => {
-          showError(error + "");
-          setLoading(false);
-      })
-      }
-    
+        AxiosInstance.put('/constant-page/update-constant', body)
+            .then(response => {
+                if (!response.data.error) {
+                    showSuccess(t("Successfully updated!"));
+                    setLoading(false);
+                    clearInput();
+                    handleClose();
+                    getConstants()
+                } else {
+                    showError(t("Something went wrong!"));
+                    setLoading(false);
+                }
+            })
+            .catch(error => {
+                showError(error + "");
+                setLoading(false);
+            })
+    }
+
 
     const [isLoadingButton, setLoadingButton] = useState(false);
 
@@ -153,10 +173,10 @@ const ConstantTable = ({ constants, getConstants, isEmptyPage }) => {
         AxiosInstance.delete('/constant-page/delete-constant/' + id)
             .then(response => {
                 if (!response.data.error) {
-                    showSuccess("Successfully deleted!");
+                    showSuccess(t("Successfully deleted!"));
                     getConstants();
                 } else {
-                    showError("Something went wrong!");
+                    showError(t("Something went wrong!"));
                 }
             })
             .catch(err => {
@@ -172,12 +192,12 @@ const ConstantTable = ({ constants, getConstants, isEmptyPage }) => {
                         <TableHead>
                             <TableRow>
                                 <TableCell>ID</TableCell>
-                                <TableCell align="left">Title TM</TableCell>
-                                <TableCell align="left">Title RU</TableCell>
-                                <TableCell align="left">Title EN</TableCell>
-                                <TableCell align="left">Type</TableCell>
-                                <TableCell align="left">DELETE</TableCell>
-                                <TableCell align="left">EDIT</TableCell>
+                                <TableCell align="left">{t('Title turkmen')}</TableCell>
+                                <TableCell align="left">{t('Title russian')}</TableCell>
+                                <TableCell align="left">{t('Title english')}</TableCell>
+                                <TableCell align="left">{t('Type')}</TableCell>
+                                <TableCell align="left">{t('DELETE')}</TableCell>
+                                <TableCell align="left">{t('EDIT')}</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -194,7 +214,7 @@ const ConstantTable = ({ constants, getConstants, isEmptyPage }) => {
                                             <TableCell align="left">{element.titleEN}</TableCell>
                                             <TableCell align="left">{element.page_type}</TableCell>
                                             <TableCell align="left"> <IconButton aria-label="delete" color="secondary" onClick={() => confirmDialog(element)}><DeleteIcon /></IconButton></TableCell>
-                                            <TableCell align="left"> <IconButton aria-label="delete" color="success" onClick={()=>handleOpen(element)}><EditIcon /></IconButton></TableCell>
+                                            <TableCell align="left"> <IconButton aria-label="delete" color="success" onClick={() => handleOpen(element)}><EditIcon /></IconButton></TableCell>
                                         </TableRow>
                                     )
                                 })
@@ -232,7 +252,7 @@ const ConstantTable = ({ constants, getConstants, isEmptyPage }) => {
                                     fullWidth
                                     required
                                     id="outlined-required"
-                                    label="Title turkmen"
+                                    label={t("Title turkmen")}
                                     defaultValue=""
                                     value={titleTM}
                                     onChange={e => setTitleTM(e.target.value)}
@@ -243,7 +263,7 @@ const ConstantTable = ({ constants, getConstants, isEmptyPage }) => {
                                     fullWidth
                                     required
                                     id="outlined-required"
-                                    label="Title russian"
+                                    label={t("Title russian")}
                                     defaultValue=""
                                     value={titleRU}
                                     onChange={e => setTitleRU(e.target.value)}
@@ -257,7 +277,7 @@ const ConstantTable = ({ constants, getConstants, isEmptyPage }) => {
                                     fullWidth
                                     required
                                     id="outlined-required"
-                                    label="Title english"
+                                    label={t("Title english")}
                                     defaultValue=""
                                     value={titleEN}
                                     onChange={e => setTitleEN(e.target.value)}
@@ -268,7 +288,7 @@ const ConstantTable = ({ constants, getConstants, isEmptyPage }) => {
                                     fullWidth
                                     required
                                     id="outlined-required"
-                                    label="Type"
+                                    label={t("Type")}
                                     defaultValue=""
                                     value={type}
                                     onChange={e => setType(e.target.value)}
@@ -277,87 +297,89 @@ const ConstantTable = ({ constants, getConstants, isEmptyPage }) => {
                         </Grid>
                         <Grid container spacing={2}>
                             <Grid item md={12} lg={6}>
-                                <TextField
-                                    fullWidth
-                                    id="filled-textarea"
-                                    label="Light Content turkmen"
-                                    placeholder="Enter Content turkmen..."
-                                    multiline
-                                    rows={20}
-                                    variant="filled"
-                                    value={contentLightTM}
-                                    onChange={e => setContentLightTM(e.target.value)}
-                                />
+                                <Typography variant="h6">{t('Content light turkmen')}</Typography>
+                                <div className="light">
+                                    <JoditEditor
+                                        ref={editor}
+                                        value={contentLightTM}
+                                        config={config}
+                                        className="light"
+                                        tabIndex={1} // tabIndex of textarea
+                                        onBlur={newContent => setContentLightTM(newContent)} // preferred to use only this option to update the content for performance reasons
+                                        onChange={newContent => { }}
+                                    />
+                                </div>
                             </Grid>
                             <Grid item md={12} lg={6}>
-                                <TextField
-                                    fullWidth
-                                    id="filled-textarea"
-                                    label="Light Content russian"
-                                    placeholder="Enter Content russian..."
-                                    multiline
-                                    rows={20}
-                                    variant="filled"
-                                    value={contentLightRU}
-                                    onChange={e => setContentLightRU(e.target.value)}
-                                />
+                                <Typography variant="h6">{t('Content light russion')}</Typography>
+                                <div className="light">
+                                    <JoditEditor
+                                        ref={editor}
+                                        value={contentLightRU}
+                                        config={config}
+                                        tabIndex={1} // tabIndex of textarea
+                                        onBlur={newContent => setContentLightRU(newContent)} // preferred to use only this option to update the content for performance reasons
+                                        onChange={newContent => { }}
+                                    />
+                                </div>
+
                             </Grid>
                         </Grid>
                         <Grid container spacing={2}>
                             <Grid item md={12} lg={6}>
-                                <TextField
-                                    fullWidth
-                                    id="filled-textarea"
-                                    label="Light Content russian"
-                                    placeholder="Enter Content russian..."
-                                    multiline
-                                    rows={20}
-                                    variant="filled"
-                                    value={contentLightEN}
-                                    onChange={e => setContentLightEN(e.target.value)}
-                                />
+                                <Typography variant="h6">{t('Content light english')}</Typography>
+                                <div className="light">
+                                    <JoditEditor
+                                        ref={editor}
+                                        value={contentLightEN}
+                                        config={config}
+                                        tabIndex={1} // tabIndex of textarea
+                                        onBlur={newContent => setContentLightEN(newContent)} // preferred to use only this option to update the content for performance reasons
+                                        onChange={newContent => { }}
+                                    />
+                                </div>
                             </Grid>
                             <Grid item md={12} lg={6}>
-                                <TextField
-                                    fullWidth
-                                    id="filled-textarea"
-                                    label="Dark Content turkmen"
-                                    placeholder="Enter Dark Content turkmen..."
-                                    multiline
-                                    rows={20}
-                                    variant="filled"
-                                    value={contentDarkTM}
-                                    onChange={e => setContentDarkTM(e.target.value)}
-                                />
+                                <Typography variant="h6">{t('Content dark turkmen')}</Typography>
+                                <div className="dark">
+                                    <JoditEditor
+                                        ref={editor}
+                                        value={contentDarkTM}
+                                        config={darkConfig}
+                                        tabIndex={1} // tabIndex of textarea
+                                        onBlur={newContent => setContentDarkTM(newContent)} // preferred to use only this option to update the content for performance reasons
+                                        onChange={newContent => { }}
+                                    />
+                                </div>
                             </Grid>
                         </Grid>
 
                         <Grid container spacing={2}>
                             <Grid item md={12} lg={6}>
-                                <TextField
-                                    fullWidth
-                                    id="filled-textarea"
-                                    label="Dark Content russian"
-                                    placeholder="Enter Dark Content russian..."
-                                    multiline
-                                    rows={20}
-                                    variant="filled"
-                                    value={contentDarkRU}
-                                    onChange={e => setContentDarkRU(e.target.value)}
-                                />
+                                <Typography variant="h6">{t('Content dark russian')}</Typography>
+                                <div className="dark">
+                                    <JoditEditor
+                                        ref={editor}
+                                        value={contentDarkRU}
+                                        config={darkConfig}
+                                        tabIndex={1} // tabIndex of textarea
+                                        onBlur={newContent => setContentDarkRU(newContent)} // preferred to use only this option to update the content for performance reasons
+                                        onChange={newContent => { }}
+                                    />
+                                </div>
                             </Grid>
                             <Grid item md={12} lg={6}>
-                                <TextField
-                                    fullWidth
-                                    id="filled-textarea"
-                                    label="Dark Content english"
-                                    placeholder="Enter Dark Content english..."
-                                    multiline
-                                    rows={20}
-                                    variant="filled"
-                                    value={contentDarkEN}
-                                    onChange={e => setContentDarkEN(e.target.value)}
-                                />
+                                <Typography variant="h6">{t('Content dark english')}</Typography>
+                                <div className="dark">
+                                    <JoditEditor
+                                        ref={editor}
+                                        value={contentDarkEN}
+                                        config={darkConfig}
+                                        tabIndex={1} // tabIndex of textarea
+                                        onBlur={newContent => setContentDarkEN(newContent)} // preferred to use only this option to update the content for performance reasons
+                                        onChange={newContent => { }}
+                                    />
+                                </div>
                             </Grid>
 
 
@@ -371,7 +393,7 @@ const ConstantTable = ({ constants, getConstants, isEmptyPage }) => {
                                         fullWidth={true}
                                         onClick={handleClick}
                                     >
-                                        {isLoading ? <p style={{ color: "white" }}>Please wait...</p> : <p style={{ color: "white" }}>Edit</p>}
+                                        {isLoading ? <Typography variant="action">{t('Please wait...')}</Typography> : <Typography variant="action">{t('Edit')}</Typography>}
                                     </LoadingButton>
 
                                 }

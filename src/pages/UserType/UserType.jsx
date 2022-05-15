@@ -16,6 +16,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { AxiosInstance } from '../Axios/AxiosInstance';
 import { showError, showSuccess, showWarning } from '../Alert/Alert.mjs';
 import { ToastContainer, toast } from 'react-toastify';
+import {useTranslation} from '../../components/sidebar/Sidebar';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -35,6 +36,7 @@ const style = {
 };
 
 function UserType() {
+  const {t} = useTranslation();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -126,7 +128,7 @@ function UserType() {
       >
          <Grid container spacing={0}>
                     <Grid item lg={6}>
-                        <h2>User types</h2>
+                        <h2>{t('User types')}</h2>
                     </Grid>
                     <Grid item lg={6}>
                         <Stack
@@ -134,7 +136,7 @@ function UserType() {
                             spacing={4}
                             justifyContent={'flex-end'}
                         >
-                            <Button variant="outlined" onClick={handleOpen} startIcon={<AddIcon />}>Add user type</Button>
+                            <Button variant="outlined" onClick={handleOpen} startIcon={<AddIcon />}>{t('Add user type')}</Button>
                         </Stack>
                     </Grid>
                 </Grid>
@@ -168,7 +170,7 @@ function UserType() {
                   fullWidth
                   required
                   id="outlined-required"
-                  label="User type"
+                  label={t('User type')}
                   defaultValue=""
                   value={userType}
                   onChange={e=>setUserType(e.target.value)}
@@ -179,7 +181,7 @@ function UserType() {
                   fullWidth
                   required
                   id="outlined-required"
-                  label="Product Limit"
+                  label={t('Product Limit')}
                   defaultValue=""
                   type="number"
                   value={limit}
@@ -194,10 +196,11 @@ function UserType() {
                                     loadingPosition="start"
                                     startIcon={<AddIcon />}
                                     variant="contained"
+                                    color="primary"
                                     fullWidth={true}
                                     onClick={handleClick}
                                 >
-                                    {isLoading ? <p style={{ color: "white" }}>Please wait...</p> : <p style={{ color: "white" }}>Add</p>}
+                                    {isLoading ? <Typography variant="action">{t('Please wait...')}</Typography> : <Typography variant="action">{t('Add')}</Typography>}
                                 </LoadingButton>
 
                                 }

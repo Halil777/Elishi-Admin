@@ -20,6 +20,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ReactLoading from 'react-loading';
 import { showError, showSuccess, showWarning } from '../Alert/Alert.mjs';
+import {useTranslation} from '../../components/sidebar/Sidebar';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -42,10 +43,12 @@ const style = {
   p: 4,
   overflow: 'scroll',
   height: '90%',
-  display: 'block'
+  display: 'block',
+  overflowX: 'hidden'
 };
 
 function SubCategory() {
+  const {t} = useTranslation();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -177,23 +180,23 @@ function SubCategory() {
         <Grid container spacing={0}>
           <Grid item lg={3} xs={12}>
             <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-helper-label">Category filter</InputLabel>
+              <InputLabel id="demo-simple-select-helper-label">{t("Category filter")}</InputLabel>
               <Select
                 labelId="demo-simple-select-helper-label"
                 id="demo-simple-select-helper"
                 value={selectCategory}
                 key="selectCategory"
-                label="Category filter"
+                label={t("Category filter")}
                 onChange={e => setSelectCategory(e.target.value)}
               >
                 <MenuItem value="">
-                  <em>None</em>
+                  <em>{t('None')}</em>
                 </MenuItem>
                 {
                   categoryList?.map((element, i) => {
                     return (
                       <MenuItem key={i} value={element.id}>
-                        {element.category_name_tm}
+                        {element.category_name_ru}
                       </MenuItem>
                     )
                   })
@@ -207,7 +210,7 @@ function SubCategory() {
               spacing={4}
               justifyContent={'flex-end'}
             >
-              <Button variant="outlined" onClick={handleOpen} startIcon={<AddIcon />}>Add Sub category</Button>
+              <Button variant="outlined" onClick={handleOpen} startIcon={<AddIcon />}>{t('Add Sub category')}</Button>
             </Stack>
           </Grid>
         </Grid>
@@ -244,7 +247,7 @@ function SubCategory() {
                   fullWidth
                   required
                   id="outlined-required"
-                  label="Sub Category name turkmen"
+                  label={t('Sub Category name turkmen')}
                   defaultValue=""
                   value={name_tm}
                   onChange={e => setNameTm(e.target.value)}
@@ -255,7 +258,7 @@ function SubCategory() {
                   fullWidth
                   required
                   id="outlined-required"
-                  label="Sub Category name russian"
+                  label={t('Sub Category name russian')}
                   defaultValue=""
                   value={name_ru}
                   onChange={e => setNameRu(e.target.value)}
@@ -269,7 +272,7 @@ function SubCategory() {
                   fullWidth
                   required
                   id="outlined-required"
-                  label="Sub Category name english"
+                  label={t('Sub Category name english')}
                   defaultValue=""
                   value={name_en}
                   onChange={e => setNameEn(e.target.value)}
@@ -277,26 +280,26 @@ function SubCategory() {
               </Grid>
               <Grid item md={12} lg={6}>
                 <FormControl fullWidth>
-                  <InputLabel id="demo-multiple-name-label">Status</InputLabel>
+                  <InputLabel id="demo-multiple-name-label">{t('Status')}</InputLabel>
                   <Select
                     value={status}
                     onChange={e => setStatus(e.target.value)}
                     labelId="demo-multiple-name-label"
                     id="demo-multiple-name"
-                    input={<OutlinedInput label="Status" />}
+                    input={<OutlinedInput label={t('Status')} />}
                   >
                     <MenuItem
                       key="Active"
                       value="1"
                     >
-                      Active
+                      {t('Active')}
                     </MenuItem>
 
                     <MenuItem
                       key="Passive"
                       value="0"
                     >
-                      Passive
+                      {t('Passive')}
                     </MenuItem>
                   </Select>
                 </FormControl>
@@ -307,7 +310,7 @@ function SubCategory() {
 
               <Grid item md={12} lg={6}>
                 <FormControl fullWidth>
-                  <InputLabel id="demo-multiple-name-label">Category</InputLabel>
+                  <InputLabel id="demo-multiple-name-label">{t('Category')}</InputLabel>
                   <Select
                     value={category}
                     onChange={e => setCategory(e.target.value)}
@@ -319,7 +322,7 @@ function SubCategory() {
                       categoryList?.map((element, i) => {
                         return (
                           <MenuItem key={i} value={element.id}>
-                            {element.category_name_tm}
+                            {element.category_name_ru}
                           </MenuItem>
                         )
                       })
@@ -345,10 +348,11 @@ function SubCategory() {
                     loadingPosition="start"
                     startIcon={<AddIcon />}
                     variant="contained"
+                    color="primary"
                     fullWidth={true}
                     onClick={handleClick}
                   >
-                    {isLoading ? <p style={{ color: "white" }}>Please wait...</p> : <p style={{ color: "white" }}>Add</p>}
+                    {isLoading ? <Typography variant="action">{t('Please wait...')}</Typography> : <Typography variant="action">{t('Add')}</Typography>}
                   </LoadingButton>
 
                 }

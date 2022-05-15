@@ -1,104 +1,83 @@
-const sidebarNav = [{
-        link: '/',
-        section: 'home',
-        icon: < i className = 'bx bx-home-alt' > </i>,
-        text: 'Home'
-    },
+import { Settings,NotificationImportant,Map,LocationCity,PersonPin,Web,Event,PartyMode,PermMedia,Camera,Category, CategorySharp, Home, SubdirectoryArrowLeftSharp,Box, ProductionQuantityLimitsTwoTone, ShoppingBasket, VerifiedUser, PersonSharp} from "@mui/icons-material"
+
+const sidebarNav = [
     {
         link: '/category',
         section: 'category',
-        icon: < i className = 'bx bx-category' > </i>,
+        icon: <Category  color="action"/>,
         text: 'Category'
     },
     {
         link: '/subcategory',
         section: 'subcategory',
-        icon: <i className = 'bx bx-subdirectory-right' > </i>,
+        icon: <SubdirectoryArrowLeftSharp  color="action"/>,
         text: 'Sub Category'
     },
     {
         link: '/products',
         section: 'products',
-        icon: < i className = 'bx bx-cube' > </i>,
+        icon: <ShoppingBasket  color="action"/>,
         text: 'Products'
     },
     {
         link: '/users',
         section: 'users',
-        icon: < i className = 'bx bx-user' > </i>,
+        icon: <PersonSharp  color="action"/>,
         text: 'Users'
     },
     {
         link: '/banners',
         section: 'banners',
-        icon: <i className = 'bx bx-camera'> </i>,
+        icon: <Camera  color="action"/>,
         text: 'Banners'
     },
     {
         link: '/ads',
         section: 'ads',
-        icon: <i className = 'bx bxs-megaphone'> </i>,
+        icon: <PermMedia  color="action"/>,
         text: 'Ads'
-    },
-    {
-        link: '/congratulations',
-        section: 'congratulations',
-        icon: < i className = 'bx bx-party' > </i>,
-        text: 'Congratulations'
-    },
-    {
-        link: '/holidays',
-        section: 'holidays',
-        icon: < i className = 'bx bx-cake' > </i>,
-        text: 'Holidays'
     },
     {
         link: '/event',
         section: 'event',
-        icon: < i className = 'bx bx-calendar-event'></i>,
+        icon: <Event  color="action"/>,
         text: 'Events'
     },
     {
         link: '/constants',
         section: 'constants',
-        icon: < i className = 'bx bx-code-alt' > </i>,
+        icon: <Web  color="action"/>,
         text: 'Constants'
     },
     {
         link: '/usertype',
         section: 'usertype',
-        icon: < i className = 'bx bx-user-check' > </i>,
+        icon: <PersonPin  color="action"/>,
         text: 'User Types'
     },
     {
         link: '/regions',
         section: 'regions',
-        icon: <i className='bx bx-map'></i>,
+        icon: <LocationCity  color="action"/>,
         text: 'Regions'
     },
     {
         link: '/districts',
         section: 'districts',
-        icon: <i className='bx bx-map'></i>,
+        icon: <Map  color="action"/>,
         text: 'Districts'
     },
     {
         link: '/push',
         section: 'push',
-        icon: <i className='bx bxs-bell-ring'></i>,
+        icon: <NotificationImportant  color="action"/>,
         text: 'Push notification'
     },
     {
         link: '/settings',
         section: 'settings',
-        icon: <i className='bx bx-cog'></i>,
+        icon: <Settings  color="action"/>,
         text: 'Settings'
-    },
-    {
-        link: '/block',
-        section: 'block',
-        icon: <i className='bx bx-block'></i>,
-        text: 'Blocked ips'
     }
 ]
 

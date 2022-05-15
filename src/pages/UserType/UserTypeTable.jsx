@@ -12,7 +12,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import { confirm } from "react-confirm-box";
 import './usertype.css';
-import { Modal, Stack } from '@mui/material';
+import { Modal, Stack, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { Box } from '@mui/system';
 import CloseIcon from '@mui/icons-material/Close';
@@ -28,6 +28,7 @@ import { AxiosInstance } from '../Axios/AxiosInstance';
 import { showError, showSuccess, showWarning } from '../Alert/Alert.mjs';
 import Loading from '../Loading/Loading';
 import Empty from '../Empty/Empty';
+import {useTranslation} from '../../components/sidebar/Sidebar'
 
 const style = {
     position: 'absolute',
@@ -35,7 +36,7 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: '50%',
-    bgcolor: 'white',
+    bgcolor: 'background.paper',
     border: '2px solid transparent',
     borderRadius: '12px',
     boxShadow: 24,
@@ -43,6 +44,7 @@ const style = {
 };
 
 const UserTypeTable=({list,isEmpty,getUserTypes})=> {
+    const {t} = useTranslation();
     const [categoryList, setCategoryList] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20])
     const [open, setOpen] = React.useState(false);
     
@@ -137,10 +139,10 @@ const UserTypeTable=({list,isEmpty,getUserTypes})=> {
                     <TableHead>
                         <TableRow>
                             <TableCell>ID</TableCell>
-                            <TableCell align="left">User type</TableCell>
-                            <TableCell align="left">Product Limit</TableCell>
-                            <TableCell align="left">DELETE</TableCell>
-                            <TableCell align="left">EDIT</TableCell>
+                            <TableCell align="left">{t('User type')}</TableCell>
+                            <TableCell align="left">{t('Product Limit')}</TableCell>
+                            <TableCell align="left">{t('DELETE')}</TableCell>
+                            <TableCell align="left">{t('EDIT')}</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -193,7 +195,7 @@ const UserTypeTable=({list,isEmpty,getUserTypes})=> {
                   fullWidth
                   required
                   id="outlined-required"
-                  label="User type"
+                  label={t('User type')}
                   defaultValue=""
                   value={userType}
                   onChange={e=>setUserType(e.target.value)}
@@ -204,7 +206,7 @@ const UserTypeTable=({list,isEmpty,getUserTypes})=> {
                   fullWidth
                   required
                   id="outlined-required"
-                  label="Product Limit"
+                  label={t("Product Limit")}
                   defaultValue=""
                   type="number"
                   value={limit}
@@ -219,10 +221,11 @@ const UserTypeTable=({list,isEmpty,getUserTypes})=> {
                                     loadingPosition="start"
                                     startIcon={<EditIcon />}
                                     variant="contained"
+                                    color="primary"
                                     fullWidth={true}
                                     onClick={handleClick}
                                 >
-                                    {isLoading ? <p style={{ color: "white" }}>Please wait...</p> : <p style={{ color: "white" }}>Edit</p>}
+                                    {isLoading ? <Typography variant="action">{t('Please wait...')}</Typography> : <Typography variant="action">{t('Edit')}</Typography>}
                                 </LoadingButton>
 
                                 }

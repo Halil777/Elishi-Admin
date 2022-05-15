@@ -12,7 +12,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import { confirm } from "react-confirm-box";
 import './categoryTable.css';
-import { Modal, Stack } from '@mui/material';
+import { Modal, Stack, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { Box } from '@mui/system';
 import CloseIcon from '@mui/icons-material/Close';
@@ -37,6 +37,7 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 import { server_ip } from '../Axios/AxiosInstance';
 import { data } from '../../constants';
+import { useTranslation } from '../../components/sidebar/Sidebar';
 
 const Input = styled('input')({
     display: 'none',
@@ -48,7 +49,7 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: '50%',
-    bgcolor: 'white',
+    bgcolor: 'background.paper',
     border: '2px solid transparent',
     borderRadius: '12px',
     boxShadow: 24,
@@ -56,6 +57,7 @@ const style = {
 };
 
 const CategoryTable = ({ list, getData, isEmpty }) => {
+    const {t} = useTranslation();
     const [open, setOpen] = React.useState(false);
 
     const handleClose = () => setOpen(false);
@@ -172,14 +174,14 @@ const CategoryTable = ({ list, getData, isEmpty }) => {
                         <TableHead>
                             <TableRow>
                                 <TableCell>ID</TableCell>
-                                <TableCell align="left">Image</TableCell>
-                                <TableCell align="left">Name TM</TableCell>
-                                <TableCell align="left">Name RU</TableCell>
-                                <TableCell align="left">Name EN</TableCell>
-                                <TableCell align="left">Status</TableCell>
-                                <TableCell align="left">Is Main</TableCell>
-                                <TableCell align="left">DELETE</TableCell>
-                                <TableCell align="left">EDIT</TableCell>
+                                <TableCell align="left">{t('Image')}</TableCell>
+                                <TableCell align="left">{t('Name TM')}</TableCell>
+                                <TableCell align="left">{t('Name RU')}</TableCell>
+                                <TableCell align="left">{t('Name EN')}</TableCell>
+                                <TableCell align="left">{t('Status')}</TableCell>
+                                <TableCell align="left">{t('is Main')}</TableCell>
+                                <TableCell align="left">{t('DELETE')}</TableCell>
+                                <TableCell align="left">{t('EDIT')}</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -244,7 +246,7 @@ const CategoryTable = ({ list, getData, isEmpty }) => {
                                     fullWidth
                                     required
                                     id="outlined-required"
-                                    label="Category name turkmen"
+                                    label={t('Category name turkmen')}
                                     defaultValue=""
                                     onChange={e => setNameTm(e.target.value)}
                                     value={name_tm}
@@ -255,7 +257,7 @@ const CategoryTable = ({ list, getData, isEmpty }) => {
                                     fullWidth
                                     required
                                     id="outlined-required"
-                                    label="Category name russian"
+                                    label={t('Category name russian')}
                                     defaultValue=""
                                     onChange={e => setNameRu(e.target.value)}
                                     value={name_ru}
@@ -269,7 +271,7 @@ const CategoryTable = ({ list, getData, isEmpty }) => {
                                     fullWidth
                                     required
                                     id="outlined-required"
-                                    label="Category name english"
+                                    label={t('Category name english')}
                                     defaultValue=""
                                     onChange={e => setNameEn(e.target.value)}
                                     value={name_en}
@@ -277,26 +279,26 @@ const CategoryTable = ({ list, getData, isEmpty }) => {
                             </Grid>
                             <Grid item md={12} lg={6}>
                                 <FormControl fullWidth>
-                                    <InputLabel id="demo-multiple-name-label">Status</InputLabel>
+                                    <InputLabel id="demo-multiple-name-label">{t('Status')}</InputLabel>
                                     <Select
                                         labelId="demo-multiple-name-label"
                                         id="demo-multiple-name"
                                         onChange={e => setStatus(e.target.value)}
                                         value={status}
-                                        input={<OutlinedInput label="Status" />}
+                                        input={<OutlinedInput label={t('Status')} />}
                                     >
                                         <MenuItem
                                             key="Active"
                                             value="1"
                                         >
-                                            Active
+                                            {t('Active')}
                                         </MenuItem>
 
                                         <MenuItem
                                             key="Passive"
                                             value="0"
                                         >
-                                            Passive
+                                            {t('Passive')}
                                         </MenuItem>
                                     </Select>
                                 </FormControl>
@@ -311,9 +313,9 @@ const CategoryTable = ({ list, getData, isEmpty }) => {
                         </Grid>
 
                         <Grid container spacing={2}>
-                            <Grid item xs={4} lg={4}>
+                            <Grid item xs={12} lg={12}>
                                 <FormControlLabel style={{ marginLeft: '5px' }} control={<Checkbox defaultChecked onChange={e => setMain(!isMain)}
-                                    value={isMain} checked={isMain} />} label="is Main" />
+                                    value={isMain} checked={isMain} />} label={t('is Main')} />
                             </Grid>
 
                             <Grid item md={12} lg={12}>
@@ -323,10 +325,11 @@ const CategoryTable = ({ list, getData, isEmpty }) => {
                                         loadingPosition="start"
                                         startIcon={<EditIcon />}
                                         variant="contained"
+                                        color="primary"
                                         fullWidth={true}
                                         onClick={handleClick}
                                     >
-                                        {isLoading ? <p style={{ color: "white" }}>Please wait...</p> : <p style={{ color: "white" }}>Edit</p>}
+                                        {isLoading ? <Typography variant="action">{t('Please wait...')}</Typography> : <Typography variant="action">{t('EDIT')}</Typography>}
                                     </LoadingButton>
 
                                 }

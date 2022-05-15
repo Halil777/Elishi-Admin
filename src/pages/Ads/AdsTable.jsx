@@ -12,7 +12,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import { confirm } from "react-confirm-box";
 import './ads.css';
-import { Modal, Stack } from '@mui/material';
+import { Modal, Stack, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { Box } from '@mui/system';
 import CloseIcon from '@mui/icons-material/Close';
@@ -37,6 +37,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import ReactLoading from 'react-loading';
 import { showError, showSuccess, showWarning } from '../Alert/Alert.mjs';
 import { ads_status } from '../Constants/Constant.mjs';
+import {useTranslation} from '../../components/sidebar/Sidebar';
 
 const Input = styled('input')({
     display: 'none',
@@ -48,17 +49,19 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: '50%',
-    bgcolor: 'white',
+    bgcolor: 'background.paper',
     border: '2px solid transparent',
     borderRadius: '12px',
     boxShadow: 24,
     p: 4,
     overflow: 'scroll',
     height: '90%',
-    display: 'block'
+    display: 'block',
+    overflowX: 'hidden'
 };
 
 const AdsTable = ({ list, isEmpty, constants, getData }) => {
+    const {t} = useTranslation();
     const [open, setOpen] = React.useState(false);
     const handleClose = () => setOpen(false);
     const [isLoading, setLoading] = useState(false);
@@ -125,13 +128,13 @@ const AdsTable = ({ list, isEmpty, constants, getData }) => {
         AxiosInstanceFormData.put('/ads/update-ads', formData)
             .then(response => {
                 if (!response.data.error) {
-                    showSuccess("Successfully updated!");
+                    showSuccess(t("Successfully updated!"));
                     setLoading(false);
                     clearInput();
                     handleClose();
                     getData();
                 } else {
-                    showError("Something went wrong!");
+                    showError(t("Something went wrong!"));
                     setLoading(false);
                 }
             })
@@ -145,10 +148,10 @@ const AdsTable = ({ list, isEmpty, constants, getData }) => {
         AxiosInstance.delete('/ads/delete-ads/' + element.id+"?image="+element.ads_image)
             .then(response => {
                 if (!response.data.error) {
-                    showSuccess("Successfully deleted!");
+                    showSuccess(t("Successfully deleted!"));
                     getData();
                 } else {
-                    showError("Something went wrong!");
+                    showError(t("Something went wrong!"));
                 }
             })
             .catch(err => {
@@ -163,11 +166,11 @@ const AdsTable = ({ list, isEmpty, constants, getData }) => {
                         <TableHead>
                             <TableRow>
                                 <TableCell>ID</TableCell>
-                                <TableCell align="left">Site URL</TableCell>
-                                <TableCell align="left">Image</TableCell>
-                                <TableCell align="left">Status</TableCell>
-                                <TableCell align="left">DELETE</TableCell>
-                                <TableCell align="left">EDIT</TableCell>
+                                <TableCell align="left">{t('Site URL')}</TableCell>
+                                <TableCell align="left">{t('Image')}</TableCell>
+                                <TableCell align="left">{t('Status')}</TableCell>
+                                <TableCell align="left">{t('DELETE')}</TableCell>
+                                <TableCell align="left">{t('EDIT')}</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -238,13 +241,13 @@ const AdsTable = ({ list, isEmpty, constants, getData }) => {
 
               <Grid item md={12} lg={6}>
                 <FormControl fullWidth>
-                  <InputLabel id="demo-multiple-name-label">Status</InputLabel>
+                  <InputLabel id="demo-multiple-name-label">{t('Status')}</InputLabel>
                   <Select
                     value={status}
                     onChange={e => setStatus(e.target.value)}
                     labelId="demo-multiple-name-label"
                     id="demo-multiple-name"
-                    input={<OutlinedInput label="Status" />}
+                    input={<OutlinedInput label={t('Status')} />}
                   >
                   
 
@@ -272,19 +275,19 @@ const AdsTable = ({ list, isEmpty, constants, getData }) => {
 
               <Grid item md={12} lg={6}>
                 <FormControl fullWidth>
-                  <InputLabel id="demo-multiple-name-label">Constant id</InputLabel>
+                  <InputLabel id="demo-multiple-name-label">{t('Constant id')}</InputLabel>
                   <Select
                     value={constant_id}
                     onChange={e => setConstantId(e.target.value)}
                     labelId="demo-multiple-name-label"
                     id="demo-multiple-name"
-                    input={<OutlinedInput label="Constant" />}
+                    input={<OutlinedInput label={t('Constant')} />}
                   >
                     {
                       constants?.map((element, i) => {
                         return (
                           <MenuItem key={i} value={element.id}>
-                            {element.titleTM}
+                            {element.titleRU}
                           </MenuItem>
                         )
                       })
@@ -310,10 +313,11 @@ const AdsTable = ({ list, isEmpty, constants, getData }) => {
                     loadingPosition="start"
                     startIcon={<EditIcon />}
                     variant="contained"
+                    color="primary"
                     fullWidth={true}
                     onClick={handleClick}
                   >
-                    {isLoading ? <p style={{ color: "white" }}>Please wait...</p> : <p style={{ color: "white" }}>Edit</p>}
+                    {isLoading ? <Typography variant="action">{t('Please wait...')}</Typography> : <Typography variant="action">{t('Edit')}</Typography>}
                   </LoadingButton>
 
                 }

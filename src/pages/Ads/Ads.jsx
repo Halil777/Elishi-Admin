@@ -21,6 +21,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import ReactLoading from 'react-loading';
 import { showError, showSuccess, showWarning } from '../Alert/Alert.mjs';
 import { ads_status } from '../Constants/Constant.mjs';
+import { useTranslation } from '../../components/sidebar/Sidebar';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -43,10 +44,12 @@ const style = {
   p: 4,
   overflow: 'scroll',
   height: '90%',
-  display: 'block'
+  display: 'block',
+  overflowX: 'hidden'
 };
 
 function Ads() {
+  const {t} = useTranslation();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -88,13 +91,13 @@ function Ads() {
     AxiosInstanceFormData.post('/ads/add-ads', formData)
       .then(response => {
         if (!response.data.error) {
-          showSuccess("Successfully added!");
+          showSuccess(t("Successfully added!"));
           setLoading(false);
           clearInput();
           handleClose();
           getData();
         } else {
-          showError("Something went wrong!");
+          showError(t("Something went wrong!"));
           setLoading(false);
         }
       })
@@ -124,7 +127,7 @@ function Ads() {
       if (!response.data.error) {
         setConstants(response.data.body);
       } else {
-        showError("Something went wrong!");
+        showError(t("Something went wrong!"));
       }
     })
     .catch(err=>{
@@ -146,7 +149,7 @@ function Ads() {
             setEmpty(false);
           }
         } else {
-          showError("Something went wrong!");
+          showError(t("Something went wrong!"));
           if (typeof list.length === 'undefined' || list.length == 0) {
             setEmpty(true);
           }
@@ -179,7 +182,7 @@ function Ads() {
               spacing={4}
               justifyContent={'flex-end'}
             >
-              <Button variant="outlined" onClick={handleOpen} startIcon={<AddIcon />}>Add ads</Button>
+              <Button variant="outlined" onClick={handleOpen} startIcon={<AddIcon />}>{t('Add ads')}</Button>
             </Stack>
           </Grid>
         </Grid>
@@ -216,7 +219,7 @@ function Ads() {
                   fullWidth
                   required
                   id="outlined-required"
-                  label="Site url"
+                  label={t('Site URL')}
                   defaultValue=""
                   value={site_url}
                   onChange={e => setUrl(e.target.value)}
@@ -225,13 +228,13 @@ function Ads() {
 
               <Grid item md={12} lg={6}>
                 <FormControl fullWidth>
-                  <InputLabel id="demo-multiple-name-label">Status</InputLabel>
+                  <InputLabel id="demo-multiple-name-label">{t('Status')}</InputLabel>
                   <Select
                     value={status}
                     onChange={e => setStatus(e.target.value)}
                     labelId="demo-multiple-name-label"
                     id="demo-multiple-name"
-                    input={<OutlinedInput label="Status" />}
+                    input={<OutlinedInput label={t('Status')} />}
                   >
                   
 
@@ -259,19 +262,19 @@ function Ads() {
 
               <Grid item md={12} lg={6}>
                 <FormControl fullWidth>
-                  <InputLabel id="demo-multiple-name-label">Constant id</InputLabel>
+                  <InputLabel id="demo-multiple-name-label">{t('Constant id')}</InputLabel>
                   <Select
                     value={constant_id}
                     onChange={e => setConstantId(e.target.value)}
                     labelId="demo-multiple-name-label"
                     id="demo-multiple-name"
-                    input={<OutlinedInput label="Constant" />}
+                    input={<OutlinedInput label={t('Constant')} />}
                   >
                     {
                       constants?.map((element, i) => {
                         return (
                           <MenuItem key={i} value={element.id}>
-                            {element.titleTM}
+                            {element.titleRU}
                           </MenuItem>
                         )
                       })
@@ -297,10 +300,11 @@ function Ads() {
                     loadingPosition="start"
                     startIcon={<AddIcon />}
                     variant="contained"
+                    color="primary"
                     fullWidth={true}
                     onClick={handleClick}
                   >
-                    {isLoading ? <p style={{ color: "white" }}>Please wait...</p> : <p style={{ color: "white" }}>Add</p>}
+                    {isLoading ? <Typography variant="action">{t('Please wait...')}</Typography> : <Typography variant="action">{t('Add')}</Typography>}
                   </LoadingButton>
 
                 }

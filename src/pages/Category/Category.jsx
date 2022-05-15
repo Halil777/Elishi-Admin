@@ -21,6 +21,7 @@ import ReactLoading from 'react-loading';
 import { showError, showSuccess, showWarning } from '../Alert/Alert.mjs';
 import FileBrowse from '../FileBrowse/FileBrowse';
 import { styled } from '@mui/material/styles';
+import { useTranslation } from '../../components/sidebar/Sidebar';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -43,6 +44,7 @@ const style = {
 };
 
 function Category() {
+  const {t}=useTranslation();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -148,7 +150,7 @@ function Category() {
       >
         <Grid container spacing={0}>
           <Grid item lg={6}>
-            <h2>Category</h2>
+            <Typography variant="h5">{t('Category')}</Typography>
           </Grid>
           <Grid item lg={6}>
             <Stack
@@ -156,7 +158,7 @@ function Category() {
               spacing={4}
               justifyContent={'flex-end'}
             >
-              <Button variant="outlined" onClick={handleOpen} startIcon={<AddIcon />}>Add Category</Button>
+              <Button variant="outlined" onClick={handleOpen} startIcon={<AddIcon />}>{t('Add Category')}</Button>
             </Stack>
           </Grid>
         </Grid>
@@ -190,7 +192,7 @@ function Category() {
                   fullWidth
                   required
                   id="outlined-required"
-                  label="Category name turkmen"
+                  label={t('Category name turkmen')}
                   defaultValue=""
                   onChange={e=>setNameTm(e.target.value)}
                   value={name_tm}
@@ -201,7 +203,7 @@ function Category() {
                   fullWidth
                   required
                   id="outlined-required"
-                  label="Category name russian"
+                  label={t('Category name russian')}
                   defaultValue=""
                   onChange={e=>setNameRu(e.target.value)}
                   value={name_ru}
@@ -215,7 +217,7 @@ function Category() {
                   fullWidth
                   required
                   id="outlined-required"
-                  label="Category name english"
+                  label={t('Category name english')}
                   defaultValue=""
                   onChange={e=>setNameEn(e.target.value)}
                   value={name_en}
@@ -223,26 +225,26 @@ function Category() {
               </Grid>
               <Grid item md={12} lg={6}>
                 <FormControl fullWidth>
-                  <InputLabel id="demo-multiple-name-label">Status</InputLabel>
+                  <InputLabel id="demo-multiple-name-label">{t('Status')}</InputLabel>
                   <Select
                     labelId="demo-multiple-name-label"
                     id="demo-multiple-name"
                     onChange={e=>setStatus(e.target.value)}
                     value={status}
-                    input={<OutlinedInput label="Status" />}
+                    input={<OutlinedInput label={t('Status')} />}
                   >
                     <MenuItem
                       key="Active"
                       value="1"
                     >
-                      Active
+                      {t('Active')}
                     </MenuItem>
 
                     <MenuItem
                       key="Passive"
                       value="0"
                     >
-                      Passive
+                      {t('Passive')}
                     </MenuItem>
                   </Select>
                 </FormControl>
@@ -257,9 +259,9 @@ function Category() {
             </Grid>
 
             <Grid container spacing={2}>
-              <Grid item xs={4} lg={4}>
+              <Grid item xs={12} lg={12}>
                 <FormControlLabel style={{ marginLeft: '5px' }} control={<Checkbox defaultChecked onChange={e=>setMain(!isMain)}
-                  value={isMain} checked={isMain} />} label="is Main" />
+                  value={isMain} checked={isMain} />} label={t('is Main')} />
               </Grid>
 
 
@@ -268,12 +270,13 @@ function Category() {
                   <LoadingButton
                     loading={isLoading}
                     loadingPosition="start"
-                    startIcon={<AddIcon />}
+                    startIcon={<AddIcon/>}
                     variant="contained"
+                    color="primary"
                     fullWidth={true}
                     onClick={handleClick}
                   >
-                    {isLoading ? <p style={{ color: "white" }}>Please wait...</p> : <p style={{ color: "white" }}>Add</p>}
+                    {isLoading ? <Typography  variant="action">{t('Please wait...')}</Typography> : <Typography  variant="action">{t('Add')}</Typography>}
                   </LoadingButton>
 
                 }

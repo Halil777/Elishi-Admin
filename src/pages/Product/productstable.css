@@ -14,5 +14,7 @@
     width: 20px;
     height: 20px;
     border-radius: 50px;
+    border-style: solid;
+    border-color:green;
     display: inline-block;
 }

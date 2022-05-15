@@ -12,7 +12,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import { confirm } from "react-confirm-box";
 import './banners.css';
-import { Modal, Stack } from '@mui/material';
+import { Modal, Stack, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { Box } from '@mui/system';
 import CloseIcon from '@mui/icons-material/Close';
@@ -34,6 +34,8 @@ import { AxiosInstance, server_ip,AxiosInstanceFormData } from '../Axios/AxiosIn
 import { showError, showSuccess, showWarning } from '../Alert/Alert.mjs';
 import FileBrowse from '../FileBrowse/FileBrowse';
 import { checkStatus } from '../Constants/Constant.mjs';
+import UrlGuide from '../Guide/UrlGuide';
+import { useTranslation } from '../../components/sidebar/Sidebar';
 
 
 const style = {
@@ -42,14 +44,15 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: '50%',
-    bgcolor: 'white',
+    bgcolor: 'background.paper',
     border: '2px solid transparent',
     borderRadius: '12px',
     boxShadow: 24,
     p: 4,
     overflow: 'scroll',
     height: '90%',
-    display: 'block'
+    display: 'block',
+    overflowX: 'hidden'
 };
 
 const Input = styled('input')({
@@ -57,15 +60,16 @@ const Input = styled('input')({
 });
 
 function BannersTable({banners,isEmptyPage,getBanners}) {
+    const {t} = useTranslation();
     const [categoryList, setCategoryList] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20])
     const [open, setOpen] = React.useState(false);
     
     const handleClose = () => setOpen(false);
 
      // Field variables
-     const [imageTM, setImageTM] = useState('Banner image turkmen');
-     const [imageRU, setImageRU] = useState('Banner image russian');
-     const [imageEN, setImageEN] = useState('Banner image english');
+     const [imageTM, setImageTM] = useState(t('Banner image turkmen'));
+     const [imageRU, setImageRU] = useState(t('Banner image russian'));
+     const [imageEN, setImageEN] = useState(t('Banner image english'));
      const [imageTMFile, setImageTMFile] = useState('');
      const [imageRUFile, setImageRUFile] = useState('');
      const [imageENFile, setImageENFile] = useState('');
@@ -76,9 +80,9 @@ function BannersTable({banners,isEmptyPage,getBanners}) {
      // Field variables
  
      const clearInput=()=>{
-         setImageTM('Banner image turkmen');
-         setImageRU('Banner image russian');
-         setImageEN('Banner image english');
+         setImageTM(t('Banner image turkmen'));
+         setImageRU(t('Banner image russian'));
+         setImageEN(t('Banner image english'));
          setImageTMFile('');
          setImageRUFile('');
          setImageENFile('');
@@ -141,10 +145,10 @@ function BannersTable({banners,isEmptyPage,getBanners}) {
         AxiosInstance.delete('/banner/delete-banner/'+id)
         .then(response => {
             if (!response.data.error) {
-                showSuccess("Successfully deleted!");
+                showSuccess(t("Successfully deleted!"));
                 getBanners();
             } else {
-                showError("Something went wrong!");
+                showError(t("Something went wrong!"));
             }
         })
         .catch(err => {
@@ -169,13 +173,13 @@ function BannersTable({banners,isEmptyPage,getBanners}) {
         AxiosInstanceFormData.put('/banner/update-banner',formdata)
         .then(response => {
             if (!response.data.error) {
-                showSuccess("Successfully updated!");
+                showSuccess(t("Successfully updated!"));
                 setLoading(false);
                 clearInput();
                 handleClose();
                 getBanners();
             } else {
-                showError("Something went wrong!");
+                showError(t("Something went wrong!"));
                 setLoading(false);
             }
         })
@@ -193,14 +197,14 @@ function BannersTable({banners,isEmptyPage,getBanners}) {
                     <TableHead>
                         <TableRow>
                             <TableCell>ID</TableCell>
-                            <TableCell align="left">Image Turkmen</TableCell>
-                            <TableCell align="left">Image Russian</TableCell>
-                            <TableCell align="left">Image English</TableCell>
-                            <TableCell align="left">Order</TableCell>
-                            <TableCell align="left">Site URL</TableCell>
-                            <TableCell align="left">Status</TableCell>
-                            <TableCell align="left">DELETE</TableCell>
-                            <TableCell align="left">EDIT</TableCell>
+                            <TableCell align="left">{t('Image Turkmen')}</TableCell>
+                            <TableCell align="left">{t('Image Russian')}</TableCell>
+                            <TableCell align="left">{t('Image English')}</TableCell>
+                            <TableCell align="left">{t('Order')}</TableCell>
+                            <TableCell align="left">{t('Site URL')}</TableCell>
+                            <TableCell align="left">{t('Status')}</TableCell>
+                            <TableCell align="left">{t('DELETE')}</TableCell>
+                            <TableCell align="left">{t('EDIT')}</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -301,26 +305,26 @@ function BannersTable({banners,isEmptyPage,getBanners}) {
                         <Grid container spacing={1}>
                             <Grid item md={12} lg={6}>
                                 <FormControl fullWidth>
-                                    <InputLabel id="demo-multiple-name-label">Status</InputLabel>
+                                    <InputLabel id="demo-multiple-name-label">{t('Status')}</InputLabel>
                                     <Select
                                         labelId="demo-multiple-name-label"
                                         id="demo-multiple-name"
                                         value={status}
                                         onChange={e=>setStatus(e.target.value)}
-                                        input={<OutlinedInput label="Status" />}
+                                        input={<OutlinedInput label={t('Status')} />}
                                     >
                                         <MenuItem
                                             key="Active"
                                             value="1"
                                         >
-                                            Active
+                                            {t('Active')}
                                         </MenuItem>
 
                                         <MenuItem
                                             key="Passive"
                                             value="0"
                                         >
-                                            Passive
+                                            {t('Passive')}
                                         </MenuItem>
                                     </Select>
                                 </FormControl>
@@ -331,7 +335,7 @@ function BannersTable({banners,isEmptyPage,getBanners}) {
                                     fullWidth
                                     required
                                     id="outlined-required"
-                                    label="Order"
+                                    label={t('Order')}
                                     type="number"
                                     value={order}
                                     onChange={e=>setOrder(e.target.value)}
@@ -339,14 +343,14 @@ function BannersTable({banners,isEmptyPage,getBanners}) {
                                 />
                             </Grid>
                         </Grid>
-
+                        <UrlGuide/>
                         <Grid container spacing={1}>
                             <Grid item md={12} lg={12}>
                                 <TextField
                                     fullWidth
                                     id="filled-textarea"
-                                    label="URL"
-                                    placeholder="Enter URL..."
+                                    label={t('URL')}
+                                    placeholder={t('Enter URL...')}
                                     multiline
                                     rows={4}
                                     value={siteUrl}
@@ -362,10 +366,11 @@ function BannersTable({banners,isEmptyPage,getBanners}) {
                                         loadingPosition="start"
                                         startIcon={<EditIcon />}
                                         variant="contained"
+                                        color="primary"
                                         fullWidth={true}
                                         onClick={handleClick}
                                     >
-                                        {isLoading ? <p style={{ color: "white" }}>Please wait...</p> : <p style={{ color: "white" }}>Edit</p>}
+                                        {isLoading ? <Typography variant="action">{t('Please wait...')}</Typography> : <Typography variant="action">{t('Edit')}</Typography>}
                                     </LoadingButton>
 
                                 }

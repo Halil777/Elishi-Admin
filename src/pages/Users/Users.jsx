@@ -29,6 +29,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import Paper from '@mui/material/Paper';
 import Compress from 'compress.js';
+import {useTranslation} from '../../components/sidebar/Sidebar'
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -47,7 +48,8 @@ const style = {
     p: 4,
     overflow: 'scroll',
     height: '90%',
-    display: 'block'
+    display: 'block',
+    overflowX: 'hidden'
 };
 
 const Input = styled('input')({
@@ -55,6 +57,7 @@ const Input = styled('input')({
 });
 
 function Users() {
+    const {t} = useTranslation();
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -118,7 +121,7 @@ function Users() {
                 if (!response.data.error) {
                     setDistricts(response.data.body);
                 } else {
-                    showError("Something went wrong!");
+                    showError(t("Something went wrong!"));
 
                 }
             })
@@ -133,7 +136,7 @@ function Users() {
                 if (!response.data.error) {
                     setTypes(response.data.body);
                 } else {
-                    showError("Something went wrong!");
+                    showError(t("Something went wrong!"));
 
                 }
             })
@@ -156,7 +159,7 @@ function Users() {
                         setEmptyPage(false);
                     }
                 } else {
-                    showError("Something went wrong!");
+                    showError(t("Something went wrong!"));
                     if (users.length == 0) {
                         setEmptyPage(true);
                     }
@@ -204,13 +207,13 @@ function Users() {
         AxiosInstance.post('/user/add-user',formData)
         .then(response => {
             if (!response.data.error) {
-                showSuccess("Successfully added!");
+                showSuccess(t("Successfully added!"));
                 setLoading(false);
                 clearInput();
                 handleClose();
                 getUsers(1)
             } else {
-                showError("Something went wrong!");
+                showError(t("Something went wrong!"));
                 setLoading(false);
             }
         })
@@ -257,7 +260,7 @@ function Users() {
                                 onChange={e => setQuery(e.target.value)}
                                 onKeyDown={e => handleEnter(e)}
                                 sx={{ ml: 1, flex: 1 }}
-                                placeholder="Search by name, phone number, email, region, user type, adress"
+                                placeholder={t('search placeholder')}
                                 inputProps={{ 'aria-label': 'search google maps' }}
                             />
                             <IconButton sx={{ p: '10px' }} aria-label="search">
@@ -271,7 +274,7 @@ function Users() {
                             spacing={4}
                             justifyContent={'flex-end'}
                         >
-                            <Button variant="outlined" onClick={handleOpen} startIcon={<AddIcon />}>Add User</Button>
+                            <Button variant="outlined" onClick={handleOpen} startIcon={<AddIcon />}>{t('Add User')}</Button>
                         </Stack>
                     </Grid>
                 </Grid>
@@ -307,7 +310,7 @@ function Users() {
                                     fullWidth
                                     required
                                     id="outlined-required"
-                                    label="Full name"
+                                    label={t('Full name')}
                                     defaultValue=""
                                     value={fullname}
                                     onChange={e => setFullname(e.target.value)}
@@ -318,7 +321,7 @@ function Users() {
                                     fullWidth
                                     required
                                     id="outlined-required"
-                                    label="Email"
+                                    label={t('Email')}
                                     defaultValue=""
                                     value={email}
                                     onChange={e => setEmail(e.target.value)}
@@ -332,7 +335,7 @@ function Users() {
                                     fullWidth
                                     required
                                     id="outlined-required"
-                                    label="Notification token"
+                                    label={t('Notification token')}
                                     defaultValue=""
                                     value={notificationToken}
                                     onChange={e => setNotificationToken(e.target.value)}
@@ -340,13 +343,13 @@ function Users() {
                             </Grid>
                             <Grid item md={12} lg={6}>
                                 <FormControl fullWidth>
-                                    <InputLabel id="demo-multiple-name-label">Status</InputLabel>
+                                    <InputLabel id="demo-multiple-name-label">{t('Status')}</InputLabel>
                                     <Select
                                         labelId="demo-multiple-name-label"
                                         id="demo-multiple-name"
                                         value={status}
                                         onChange={e => setStatus(e.target.value)}
-                                        input={<OutlinedInput label="Status" />}
+                                        input={<OutlinedInput label={t('Status')} />}
                                     >
                                         {
                                             userStatuses.map((status) => {
@@ -368,13 +371,13 @@ function Users() {
                         <Grid container spacing={2}>
                             <Grid item md={12} lg={6}>
                                 <FormControl fullWidth>
-                                    <InputLabel id="demo-multiple-name-label">User type</InputLabel>
+                                    <InputLabel id="demo-multiple-name-label">{t('User type')}</InputLabel>
                                     <Select
                                         labelId="demo-multiple-name-label"
                                         id="demo-multiple-name"
                                         value={userType}
                                         onChange={e => setUserType(e.target.value)}
-                                        input={<OutlinedInput label="User type" />}
+                                        input={<OutlinedInput label={t("User type")} />}
                                     >
                                         {
                                             userTypes.map((type, i) => {
@@ -398,7 +401,7 @@ function Users() {
                                     fullWidth
                                     required
                                     id="outlined-required"
-                                    label="Phone number"
+                                    label={t('Phone number')}
                                     defaultValue=""
                                     value={phoneNumber}
                                     onChange={e => setPhoneNumber(e.target.value)}
@@ -408,13 +411,13 @@ function Users() {
                         <Grid container spacing={2}>
                             <Grid item md={12} lg={6}>
                                 <FormControl fullWidth>
-                                    <InputLabel id="demo-multiple-name-label">Gender</InputLabel>
+                                    <InputLabel id="demo-multiple-name-label">{t('Gender')}</InputLabel>
                                     <Select
                                         value={gender}
                                         onChange={e => setGender(e.target.value)}
                                         labelId="demo-multiple-name-label"
                                         id="demo-multiple-name"
-                                        input={<OutlinedInput label="Gender" />}
+                                        input={<OutlinedInput label={t("Gender")} />}
                                     >
                                         {
                                             genders.map((gender, i) => {
@@ -429,13 +432,13 @@ function Users() {
 
                             <Grid item md={12} lg={6}>
                                 <FormControl fullWidth>
-                                    <InputLabel id="demo-multiple-name-label">District</InputLabel>
+                                    <InputLabel id="demo-multiple-name-label">{t('District')}</InputLabel>
                                     <Select
                                         labelId="demo-multiple-name-label"
                                         id="demo-multiple-name"
                                         value={district}
                                         onChange={e => setDistrict(e.target.value)}
-                                        input={<OutlinedInput label="District" />}
+                                        input={<OutlinedInput label={t("District")} />}
                                     >
                                         {
                                             districts.map((type, i) => {
@@ -444,7 +447,7 @@ function Users() {
                                                         key={type.id}
                                                         value={type.id}
                                                     >
-                                                        {type.district_name_tm}
+                                                        {type.district_name_ru}
                                                     </MenuItem>
                                                 )
                                             })
@@ -458,8 +461,8 @@ function Users() {
                                 <TextField
                                     fullWidth
                                     id="filled-textarea"
-                                    label="Adress"
-                                    placeholder="Address..."
+                                    label={t('Address')}
+                                    placeholder={t('Address')+"..."}
                                     multiline
                                     rows={4}
                                     variant="filled"
@@ -482,10 +485,11 @@ function Users() {
                                         loadingPosition="start"
                                         startIcon={<AddIcon />}
                                         variant="contained"
+                                        color="primary"
                                         fullWidth={true}
                                         onClick={handleClick}
                                     >
-                                        {isLoading ? <p style={{ color: "white" }}>Please wait...</p> : <p style={{ color: "white" }}>Add</p>}
+                                        {isLoading ? <Typography variant="action">{t('Please wait...')}</Typography> : <Typography variant="action">{t('Add')}</Typography>}
                                     </LoadingButton>
 
                                 }

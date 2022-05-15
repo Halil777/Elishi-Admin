@@ -1,21 +1,23 @@
 import React from 'react'
-import './main-layout.scss'
 import { Outlet } from 'react-router-dom'
 import Sidebar from '../components/sidebar/Sidebar'
 import TopNav from '../components/topnav/TopNav'
-import { Grid, Stack } from '@mui/material'
+import { Grid, Paper, Stack } from '@mui/material'
+import Navbar from '../components/Drawer/Navbar'
+import './main-layout.css'
 
-const MainLayout = () => {
+const MainLayout = ({changeTheme,isDarkTheme}) => {
     return (
-        <Stack direction={"row"}>
-            <Sidebar />
-            <div className="main">
-                <div className="main__content">
-                    <TopNav />
-                    <Outlet />
-                </div>
+        <div>
+            <div className="side">
+                <Sidebar changeTheme={changeTheme} isDarkTheme={isDarkTheme}/>
             </div>
-        </Stack>
+           
+            <div className="main">
+                {/* <Navbar /> */}
+                <Outlet />
+            </div>
+        </div>
     )
 }
 

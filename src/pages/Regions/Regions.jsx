@@ -16,7 +16,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { AxiosInstance } from '../Axios/AxiosInstance';
 import { showError, showSuccess, showWarning } from '../Alert/Alert.mjs';
 import { ToastContainer, toast } from 'react-toastify';
-
+import {useTranslation} from '../../components/sidebar/Sidebar';
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 
@@ -35,6 +35,7 @@ const style = {
 };
 
 function Regions() {
+  const {t} = useTranslation();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -128,7 +129,7 @@ function Regions() {
       >
         <Grid container spacing={0}>
           <Grid item lg={6}>
-            <h2>Regions</h2>
+            <h2>{t('Regions')}</h2>
           </Grid>
           <Grid item lg={6}>
             <Stack
@@ -136,7 +137,7 @@ function Regions() {
               spacing={4}
               justifyContent={'flex-end'}
             >
-              <Button variant="outlined" onClick={handleOpen} startIcon={<AddIcon />}>Add Region</Button>
+              <Button variant="outlined" onClick={handleOpen} startIcon={<AddIcon />}>{t('Add Region')}</Button>
             </Stack>
           </Grid>
         </Grid>
@@ -170,7 +171,7 @@ function Regions() {
                   fullWidth
                   required
                   id="outlined-required"
-                  label="Region name turkmen"
+                  label={t('Region name turkmen')}
                   defaultValue=""
                   value={nameTM}
                   onChange={e => setNameTM(e.target.value)}
@@ -181,7 +182,7 @@ function Regions() {
                   fullWidth
                   required
                   id="outlined-required"
-                  label="Region name russian"
+                  label={t('Region name russian')}
                   defaultValue=""
                   value={nameRU}
                   onChange={e => setNameRU(e.target.value)}
@@ -195,7 +196,7 @@ function Regions() {
                   fullWidth
                   required
                   id="outlined-required"
-                  label="Region name english"
+                  label={t('Region name english')}
                   defaultValue=""
                   value={nameEN}
                   onChange={e => setNameEN(e.target.value)}
@@ -214,7 +215,7 @@ function Regions() {
                     fullWidth={true}
                     onClick={handleClick}
                   >
-                    {isLoading ? <p style={{ color: "white" }}>Please wait...</p> : <p style={{ color: "white" }}>Add</p>}
+                    {isLoading ? <Typography variant="action">{t('Please wait...')}</Typography> : <Typography variant="action">{t('Add')}</Typography>}
                   </LoadingButton>
 
                 }

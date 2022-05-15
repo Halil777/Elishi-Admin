@@ -1,10 +1,9 @@
 export const ProductLimit = 50;
-
 export const productStatuses = [
     {
         value:"1",
         label:"Active",
-        color:"#FFFFFF"
+        color:"#ffffff4e"
     },
     {
         value:"0",
@@ -109,10 +108,6 @@ export const ads_status= [
     },
     {
         value:4,
-        label:"product_large"
-    },
-    {
-        value:5,
         label:"product_large"
     },
     {

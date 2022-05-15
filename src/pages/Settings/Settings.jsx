@@ -5,7 +5,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -19,6 +19,7 @@ import { showError, showSuccess, showWarning } from '../Alert/Alert.mjs';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { androidVersionRequired, androidVersionType, iosVersionRequired, iosVersionType } from '../Constants/Constant.mjs';
+import {useTranslation} from '../../components/sidebar/Sidebar';
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
@@ -28,6 +29,7 @@ const Item = styled(Paper)(({ theme }) => ({
   }));
 
 function Settings() {
+  const {t} = useTranslation();
   const [isLoading, setLoading] = useState(false);
   const [androidVersion,setAndroidVersion]=useState('1');
   const [iosVersion,setIosVersion]=useState('1');
@@ -100,14 +102,14 @@ function Settings() {
   return (
     <div>
       <ToastContainer/>
-      <h2>Settings</h2>
+      <h2>{t('Settings')}</h2>
 
     <br/>
      <Grid container spacing={6}>
         <Grid item xs={12} lg={6}>
             <TextField
             fullWidth
-            label="Android required version"
+            label={t("Android required version")}
             id="standard-size-normal"
             defaultValue="1"
             variant="standard"
@@ -119,7 +121,7 @@ function Settings() {
         <Grid item xs={12} lg={6}>
             <TextField
             fullWidth
-            label="IOS required version"
+            label={t("IOS required version")}
             id="standard-size-normal"
             defaultValue="1"
             variant="standard"
@@ -131,7 +133,7 @@ function Settings() {
         <Grid item xs={12} lg={6}>
             <TextField
             fullWidth
-            label="Android version requirement"
+            label={t("Android version requirement")}
             id="standard-size-normal"
             defaultValue="1"
             variant="standard"
@@ -143,7 +145,7 @@ function Settings() {
         <Grid item xs={12} lg={6}>
             <TextField
             fullWidth
-            label="IOS version requirement"
+            label={t("IOS version requirement")}
             id="standard-size-normal"
             defaultValue="1"
             variant="standard"
@@ -164,7 +166,7 @@ function Settings() {
                     color='success'
                     onClick={handleClick}
                   >
-                    {isLoading ? <p style={{ color: "white" }}>Please wait...</p> : <p style={{ color: "white" }}>Save</p>}
+                    {isLoading ? <Typography variant="action">{t("Please wait...")}</Typography> : <Typography variant="action">{t('Save')}</Typography>}
                   </LoadingButton>
 
                 }

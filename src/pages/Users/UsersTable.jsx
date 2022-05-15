@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -12,7 +12,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import { confirm } from "react-confirm-box";
 import './users.css';
-import { Modal, Stack } from '@mui/material';
+import { Modal, Stack, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { Box } from '@mui/system';
 import CloseIcon from '@mui/icons-material/Close';
@@ -35,6 +35,7 @@ import { checkGender, checkStatus,userStatuses,genders, productStatuses } from '
 import { showError, showSuccess, showWarning } from '../Alert/Alert.mjs';
 import FileBrowse from '../FileBrowse/FileBrowse';
 import Compress from 'compress.js';
+import { useTranslation } from '../../components/sidebar/Sidebar';
 
 const style = {
     position: 'absolute',
@@ -42,14 +43,15 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: '50%',
-    bgcolor: 'white',
+    bgcolor: 'background.paper',
     border: '2px solid transparent',
     borderRadius: '12px',
     boxShadow: 24,
     p: 4,
     overflow: 'scroll',
     height: '90%',
-    display: 'block'
+    display: 'block',
+    overflowX: 'hidden'
 };
 
 const Input = styled('input')({
@@ -57,6 +59,7 @@ const Input = styled('input')({
 });
 
 const UsersTable = ({ getUsers, userTypes, isEmptyPage, districts, users,page_count }) => {
+    const {t} = useTranslation();
     const [categoryList, setCategoryList] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20])
     const [open, setOpen] = React.useState(false);
    
@@ -78,11 +81,10 @@ const UsersTable = ({ getUsers, userTypes, isEmptyPage, districts, users,page_co
     const [gender, setGender] = useState('');
     const [district, setDistrict] = useState('');
     const [address, setAddress] = useState('');
-    const [image, setImage] = useState('Select profile image');
+    const [image, setImage] = useState(t('Select profile image'));
     const [imageFile, setImageFile] = useState('');
     const [id,setId] = useState(0);
     // Field variables
-
 
     const handleOpen = (element) => {
         setOpen(true);
@@ -132,9 +134,9 @@ const UsersTable = ({ getUsers, userTypes, isEmptyPage, districts, users,page_co
         AxiosInstance.post('/user/change-product-status',body)
         .then(response => {
             if (!response.data.error) {
-                showSuccess("Successfully updated!");
+                showSuccess(t("Successfully updated!"));
             } else {
-                showError("Something went wrong!");
+                showError(t("Something went wrong!"));
             }
         })
         .catch(err => {
@@ -147,10 +149,10 @@ const UsersTable = ({ getUsers, userTypes, isEmptyPage, districts, users,page_co
         AxiosInstance.delete('/user/delete-user/'+element.id)
         .then(response => {
             if (!response.data.error) {
-                showSuccess("Successfully deleted!");
+                showSuccess(t("Successfully deleted!"));
                 getUsers(page);
             } else {
-                showError("Something went wrong!");
+                showError(t("Something went wrong!"));
             }
         })
         .catch(err => {
@@ -183,13 +185,13 @@ const UsersTable = ({ getUsers, userTypes, isEmptyPage, districts, users,page_co
         AxiosInstance.put('/user/update-user',formData)
         .then(response => {
             if (!response.data.error) {
-                showSuccess("Successfully updated!");
+                showSuccess(t("Successfully updated!"));
                 setLoading(false);
                 clearInput();
                 handleClose();
                 getUsers(1);
             } else {
-                showError("Something went wrong!");
+                showError(t("Something went wrong!"));
                 setLoading(false);
             }
         })
@@ -209,7 +211,7 @@ const UsersTable = ({ getUsers, userTypes, isEmptyPage, districts, users,page_co
         setGender('');
         setDistrict('');
         setAddress('');
-        setImage('Select profile image');
+        setImage(t('Select profile image'));
         setImageFile('');
         setId(0);
     }
@@ -242,15 +244,15 @@ const UsersTable = ({ getUsers, userTypes, isEmptyPage, districts, users,page_co
                             <TableHead>
                                 <TableRow>
                                     <TableCell>ID</TableCell>
-                                    <TableCell align="left">Image</TableCell>
-                                    <TableCell align="left">Full name</TableCell>
-                                    <TableCell align="left">User type</TableCell>
-                                    <TableCell align="left">Gender</TableCell>
-                                    <TableCell align="left">Phone number</TableCell>
-                                    <TableCell align="left">Status</TableCell>
-                                    <TableCell align="left">DELETE</TableCell>
-                                    <TableCell align="left">EDIT</TableCell>
-                                    <TableCell align="left">CHANGE PRODUCT STATUS</TableCell>
+                                    <TableCell align="left">{t('Image')}</TableCell>
+                                    <TableCell align="left">{t('Full name')}</TableCell>
+                                    <TableCell align="left">{t('User type')}</TableCell>
+                                    <TableCell align="left">{t('Gender')}</TableCell>
+                                    <TableCell align="left">{t('Phone number')}</TableCell>
+                                    <TableCell align="left">{t('Status')}</TableCell>
+                                    <TableCell align="left">{t('DELETE')}</TableCell>
+                                    <TableCell align="left">{t('EDIT')}</TableCell>
+                                    <TableCell align="left">{t('CHANGE PRODUCT STATUS')}</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -281,22 +283,22 @@ const UsersTable = ({ getUsers, userTypes, isEmptyPage, districts, users,page_co
                                                 <TableCell align="left">
                                                 <Stack direction={'row'} spacing={2}>
                                                 <FormControl fullWidth>
-                                    <InputLabel id="demo-multiple-name-label">Status</InputLabel>
+                                    <InputLabel id="demo-multiple-name-label">{t('Status')}</InputLabel>
                                     <Select
                                         labelId="demo-multiple-name-label"
                                         id="demo-multiple-name"
                                         value={changeStatus}
                                         onChange={e => setChangeStatus(e.target.value)}
-                                        input={<OutlinedInput label="Status" />}
+                                        input={<OutlinedInput label={t('Status')} />}
                                     >
                                         {
                                             productStatuses.map((st) => {
                                                 return (
                                                     <MenuItem
-                                                        key="Active"
+                                                        key={st.label}
                                                         value={st.value}
                                                     >
-                                                        {st.label}
+                                                        {t(st.label)}
                                                     </MenuItem>
                                                 )
                                             })
@@ -355,7 +357,7 @@ const UsersTable = ({ getUsers, userTypes, isEmptyPage, districts, users,page_co
                                     fullWidth
                                     required
                                     id="outlined-required"
-                                    label="Full name"
+                                    label={t("Full name")}
                                     defaultValue=""
                                     value={fullname}
                                     onChange={e => setFullname(e.target.value)}
@@ -366,7 +368,7 @@ const UsersTable = ({ getUsers, userTypes, isEmptyPage, districts, users,page_co
                                     fullWidth
                                     required
                                     id="outlined-required"
-                                    label="Email"
+                                    label={t("Email")}
                                     defaultValue=""
                                     value={email}
                                     onChange={e => setEmail(e.target.value)}
@@ -380,7 +382,7 @@ const UsersTable = ({ getUsers, userTypes, isEmptyPage, districts, users,page_co
                                     fullWidth
                                     required
                                     id="outlined-required"
-                                    label="Notification token"
+                                    label={t("Notification token")}
                                     defaultValue=""
                                     value={notificationToken}
                                     onChange={e => setNotificationToken(e.target.value)}
@@ -388,13 +390,13 @@ const UsersTable = ({ getUsers, userTypes, isEmptyPage, districts, users,page_co
                             </Grid>
                             <Grid item md={12} lg={6}>
                                 <FormControl fullWidth>
-                                    <InputLabel id="demo-multiple-name-label">Status</InputLabel>
+                                    <InputLabel id="demo-multiple-name-label">{t("Status")}</InputLabel>
                                     <Select
                                         labelId="demo-multiple-name-label"
                                         id="demo-multiple-name"
                                         value={status}
                                         onChange={e => setStatus(e.target.value)}
-                                        input={<OutlinedInput label="Status" />}
+                                        input={<OutlinedInput label={t("Status")} />}
                                     >
                                         {
                                             userStatuses.map((status) => {
@@ -416,13 +418,13 @@ const UsersTable = ({ getUsers, userTypes, isEmptyPage, districts, users,page_co
                         <Grid container spacing={2}>
                             <Grid item md={12} lg={6}>
                                 <FormControl fullWidth>
-                                    <InputLabel id="demo-multiple-name-label">User type</InputLabel>
+                                    <InputLabel id="demo-multiple-name-label">{t("User type")}</InputLabel>
                                     <Select
                                         labelId="demo-multiple-name-label"
                                         id="demo-multiple-name"
                                         value={userType}
                                         onChange={e => setUserType(e.target.value)}
-                                        input={<OutlinedInput label="User type" />}
+                                        input={<OutlinedInput label={t("User type")} />}
                                     >
                                         {
                                             userTypes.map((type, i) => {
@@ -446,7 +448,7 @@ const UsersTable = ({ getUsers, userTypes, isEmptyPage, districts, users,page_co
                                     fullWidth
                                     required
                                     id="outlined-required"
-                                    label="Phone number"
+                                    label={t('Phone number')}
                                     defaultValue=""
                                     value={phoneNumber}
                                     onChange={e => setPhoneNumber(e.target.value)}
@@ -456,13 +458,13 @@ const UsersTable = ({ getUsers, userTypes, isEmptyPage, districts, users,page_co
                         <Grid container spacing={2}>
                             <Grid item md={12} lg={6}>
                                 <FormControl fullWidth>
-                                    <InputLabel id="demo-multiple-name-label">Gender</InputLabel>
+                                    <InputLabel id="demo-multiple-name-label">{t('Gender')}</InputLabel>
                                     <Select
                                         value={gender}
                                         onChange={e => setGender(e.target.value)}
                                         labelId="demo-multiple-name-label"
                                         id="demo-multiple-name"
-                                        input={<OutlinedInput label="Gender" />}
+                                        input={<OutlinedInput label={t('Gender')} />}
                                     >
                                         {
                                             genders.map((gender, i) => {
@@ -477,13 +479,13 @@ const UsersTable = ({ getUsers, userTypes, isEmptyPage, districts, users,page_co
 
                             <Grid item md={12} lg={6}>
                                 <FormControl fullWidth>
-                                    <InputLabel id="demo-multiple-name-label">District</InputLabel>
+                                    <InputLabel id="demo-multiple-name-label">{t('District')}</InputLabel>
                                     <Select
                                         labelId="demo-multiple-name-label"
                                         id="demo-multiple-name"
                                         value={district}
                                         onChange={e => setDistrict(e.target.value)}
-                                        input={<OutlinedInput label="District" />}
+                                        input={<OutlinedInput label={t('District')} />}
                                     >
                                         {
                                             districts.map((type, i) => {
@@ -492,7 +494,7 @@ const UsersTable = ({ getUsers, userTypes, isEmptyPage, districts, users,page_co
                                                         key={type.id}
                                                         value={type.id}
                                                     >
-                                                        {type.district_name_tm}
+                                                        {type.district_name_ru}
                                                     </MenuItem>
                                                 )
                                             })
@@ -506,8 +508,8 @@ const UsersTable = ({ getUsers, userTypes, isEmptyPage, districts, users,page_co
                                 <TextField
                                     fullWidth
                                     id="filled-textarea"
-                                    label="Adress"
-                                    placeholder="Address..."
+                                    label={t('Address')}
+                                    placeholder={t('Address')+"..."}
                                     multiline
                                     rows={4}
                                     variant="filled"
@@ -530,10 +532,11 @@ const UsersTable = ({ getUsers, userTypes, isEmptyPage, districts, users,page_co
                                         loadingPosition="start"
                                         startIcon={<EditIcon />}
                                         variant="contained"
+                                        color="primary"
                                         fullWidth={true}
                                         onClick={handleClick}
                                     >
-                                        {isLoading ? <p style={{ color: "white" }}>Please wait...</p> : <p style={{ color: "white" }}>Edit</p>}
+                                        {isLoading ? <Typography variant="action">{t('Please wait...')}</Typography> : <Typography variant="action">{t('Edit')}</Typography>}
                                     </LoadingButton>
 
                                 }

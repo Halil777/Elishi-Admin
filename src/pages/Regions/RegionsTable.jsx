@@ -12,7 +12,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import { confirm } from "react-confirm-box";
 import './regions.css';
-import { Modal, Stack } from '@mui/material';
+import { Modal, Stack, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { Box } from '@mui/system';
 import CloseIcon from '@mui/icons-material/Close';
@@ -28,6 +28,7 @@ import { AxiosInstance } from '../Axios/AxiosInstance';
 import { showError, showSuccess, showWarning } from '../Alert/Alert.mjs';
 import Loading from '../Loading/Loading';
 import Empty from '../Empty/Empty';
+import {useTranslation} from '../../components/sidebar/Sidebar';
 
 const style = {
     position: 'absolute',
@@ -35,7 +36,7 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: '50%',
-    bgcolor: 'white',
+    bgcolor: 'background.paper',
     border: '2px solid transparent',
     borderRadius: '12px',
     boxShadow: 24,
@@ -43,6 +44,7 @@ const style = {
 };
 
 const HolidayTable = ({ list, isEmpty, getRegion }) => {
+    const {t} = useTranslation();
     const [categoryList, setCategoryList] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20])
     const [open, setOpen] = React.useState(false);
     
@@ -141,11 +143,11 @@ const HolidayTable = ({ list, isEmpty, getRegion }) => {
                     <TableHead>
                         <TableRow>
                             <TableCell>ID</TableCell>
-                            <TableCell align="left">Name TM</TableCell>
-                            <TableCell align="left">Name RU</TableCell>
-                            <TableCell align="left">Name EN</TableCell>
-                            <TableCell align="left">DELETE</TableCell>
-                            <TableCell align="left">EDIT</TableCell>
+                            <TableCell align="left">{t('Region name turkmen')}</TableCell>
+                            <TableCell align="left">{t('Region name russian')}</TableCell>
+                            <TableCell align="left">{t('Region name english')}</TableCell>
+                            <TableCell align="left">{t('DELETE')}</TableCell>
+                            <TableCell align="left">{t('EDIT')}</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -200,7 +202,7 @@ const HolidayTable = ({ list, isEmpty, getRegion }) => {
                   fullWidth
                   required
                   id="outlined-required"
-                  label="Region name turkmen"
+                  label={t("Region name turkmen")}
                   defaultValue=""
                   value={nameTM}
                   onChange={e => setNameTM(e.target.value)}
@@ -211,7 +213,7 @@ const HolidayTable = ({ list, isEmpty, getRegion }) => {
                   fullWidth
                   required
                   id="outlined-required"
-                  label="Region name russian"
+                  label={t("Region name russian")}
                   defaultValue=""
                   value={nameRU}
                   onChange={e => setNameRU(e.target.value)}
@@ -225,7 +227,7 @@ const HolidayTable = ({ list, isEmpty, getRegion }) => {
                   fullWidth
                   required
                   id="outlined-required"
-                  label="Region name english"
+                  label={t("Region name english")}
                   defaultValue=""
                   value={nameEN}
                   onChange={e => setNameEN(e.target.value)}
@@ -244,7 +246,7 @@ const HolidayTable = ({ list, isEmpty, getRegion }) => {
                     fullWidth={true}
                     onClick={handleClick}
                   >
-                    {isLoading ? <p style={{ color: "white" }}>Please wait...</p> : <p style={{ color: "white" }}>Edit</p>}
+                    {isLoading ? <Typography variant="action">{t('Please wait...')}</Typography> : <Typography variant="action">{t('Edit')}</Typography>}
                   </LoadingButton>
 
                 }

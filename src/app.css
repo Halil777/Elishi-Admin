@@ -17,3 +17,33 @@
     font-family: regularFont;
     src: url(../public/assets/fonts/Ubuntu-Regular.ttf);
 }
+
+.App {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    color: #000133;
+  }
+  
+  .header,
+  .footer {
+    background: #00022e;
+    height: 50px;
+    color: #fc86aa;
+  }
+  
+  .container {
+    display: flex;
+    flex: 1;
+  }
+  
+  .drawer {
+    background: #d8dcd6;
+    width: 240px;
+  }
+  
+  .main {
+    flex: 1;
+    background: #f7f5f5;
+  }

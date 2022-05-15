@@ -30,6 +30,7 @@ import DatePicker from '@mui/lab/DatePicker';
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
 import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 import Chip from '@mui/material/Chip';
+import {useTranslation} from '../../components/sidebar/Sidebar'
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -48,7 +49,8 @@ const style = {
     p: 4,
     overflow: 'scroll',
     height: '90%',
-    display: 'block'
+    display: 'block',
+    overflowX: 'hidden'
 };
 
 const style2 = {
@@ -69,6 +71,7 @@ const Input = styled('input')({
 });
 
 function Products() {
+    const {t} = useTranslation();
     const [open, setOpen] = React.useState(false);
     const [filterOpenState, setFilterOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
@@ -239,8 +242,8 @@ function Products() {
     function compressSliderImages(fls) {
         const files = [...fls]
         compress.compress(files, {
-            size: 1, // the max size in MB, defaults to 2MB
-            quality: .10, // the quality of the image, max is 1,
+            size: 2, // the max size in MB, defaults to 2MB
+            quality: .20, // the quality of the image, max is 1,
             maxWidth: 1920, // the max width of the output image, defaults to 1920px
             maxHeight: 1920, // the max height of the output image, defaults to 1920px
             resize: true, // defaults to true, set false if you do not want to resize the image width and height
@@ -261,8 +264,8 @@ function Products() {
     function compressFirstImage(fls) {
         const files = [...fls]
         compress.compress(files, {
-            size: 1, // the max size in MB, defaults to 2MB
-            quality: .10, // the quality of the image, max is 1,
+            size: 2, // the max size in MB, defaults to 2MB
+            quality: .20, // the quality of the image, max is 1,
             maxWidth: 1920, // the max width of the output image, defaults to 1920px
             maxHeight: 1920, // the max height of the output image, defaults to 1920px
             resize: true, // defaults to true, set false if you do not want to resize the image width and height
@@ -338,30 +341,30 @@ function Products() {
                             spacing={2}
                         >
                         <Button style={{"width":"120px","text-align": "left"}} onClick={filterOpen} startIcon={<FilterAltOutlinedIcon />}>
-                            filter
+                            {t('filter')}
                         </Button>
                         <Stack direction="row" spacing={1}>
                             {
                                 selectCategory!=''?
-                                <Chip color="success" label={"Category: "+selectCategory} variant="outlined" onDelete={()=>setSelectCategory('')} />
+                                <Chip color="success" label={t('Category')+": "+selectCategory} variant="outlined" onDelete={()=>setSelectCategory('')} />
                                 :
                                 null
                             }
                             {
                                 selectStatus!=''?
-                                <Chip color="success" label={"Status: "+selectStatus} variant="outlined" onDelete={()=>setSelectStatus('')} />
+                                <Chip color="success" label={t('Status')+": "+selectStatus} variant="outlined" onDelete={()=>setSelectStatus('')} />
                                 :
                                 null
                             }
                             {
                                 startDate!=''?
-                                <Chip color="success" label={"Start date: "+startDate} variant="outlined" onDelete={()=>setStartDate('')} />
+                                <Chip color="success" label={t('Start date')+": "+startDate} variant="outlined" onDelete={()=>setStartDate('')} />
                                 :
                                 null
                             }
                             {
                                 (endDate!='' && startDate!='')?
-                                <Chip color="success" label={"End date: "+startDate} variant="outlined" onDelete={()=>setEndDate('')} />
+                                <Chip color="success" label={t('End date')+": "+startDate} variant="outlined" onDelete={()=>setEndDate('')} />
                                 :
                                 null
                             }
@@ -376,7 +379,7 @@ function Products() {
                             spacing={4}
                             justifyContent={'flex-end'}
                         >
-                            <Button variant="outlined" onClick={handleOpen} startIcon={<AddIcon />}>Add Products</Button>
+                            <Button variant="outlined" onClick={handleOpen} startIcon={<AddIcon />}>{t('Add Products')}</Button>
                         </Stack>
                     </Grid>
                     {/* Add product button end */}
@@ -415,7 +418,7 @@ function Products() {
                                     fullWidth
                                     required
                                     id="outlined-required"
-                                    label="Product name"
+                                    label={t('Product name')}
                                     defaultValue=""
                                     value={name}
                                     onChange={e => setName(e.target.value)}
@@ -426,7 +429,7 @@ function Products() {
                                     fullWidth
                                     required
                                     id="outlined-required"
-                                    label="Price"
+                                    label={t('Price')}
                                     defaultValue=""
                                     type="number"
                                     value={price}
@@ -440,7 +443,7 @@ function Products() {
                                 <TextField
                                     fullWidth
                                     id="outlined-required"
-                                    label="Size"
+                                    label={t('Size')}
                                     defaultValue=""
                                     value={size}
                                     onChange={e => setSize(e.target.value)}
@@ -448,22 +451,22 @@ function Products() {
                             </Grid>
                             <Grid item md={12} lg={6}>
                                 <FormControl fullWidth>
-                                    <InputLabel id="demo-multiple-name-label">Status</InputLabel>
+                                    <InputLabel id="demo-multiple-name-label">{t('Status')}</InputLabel>
                                     <Select
                                         labelId="demo-multiple-name-label"
                                         id="demo-multiple-name"
                                         value={status}
                                         onChange={e => setStatus(e.target.value)}
-                                        input={<OutlinedInput label="Status" />}
+                                        input={<OutlinedInput label={t('Status')} />}
                                     >
                                         {
                                             productStatuses.map((st) => {
                                                 return (
                                                     <MenuItem
-                                                        key="Active"
+                                                        key={st.label}
                                                         value={st.value}
                                                     >
-                                                        {st.label}
+                                                        {t(st.label)}
                                                     </MenuItem>
                                                 )
                                             })
@@ -479,19 +482,19 @@ function Products() {
                         <Grid container spacing={2}>
                             <Grid item md={12} lg={6}>
                                 <FormControl fullWidth>
-                                    <InputLabel id="demo-multiple-name-label">Sub Category</InputLabel>
+                                    <InputLabel id="demo-multiple-name-label">{t('Sub Category')}</InputLabel>
                                     <Select
                                         value={sub_category}
                                         onChange={e => setSubCategory(e.target.value)}
                                         labelId="demo-multiple-name-label"
                                         id="demo-multiple-name"
-                                        input={<OutlinedInput label="Sub category" />}
+                                        input={<OutlinedInput label={t('Sub Category')} />}
                                     >
                                         {
                                             subCategories.map((element, i) => {
                                                 return (
                                                     <MenuItem key={i} value={element.id}>
-                                                        {element.sub_category_name_tm}
+                                                        {element.sub_category_name_ru}
                                                     </MenuItem>
                                                 )
                                             })
@@ -504,7 +507,7 @@ function Products() {
                                 <TextField
                                     fullWidth
                                     id="outlined-required"
-                                    label="Phone number"
+                                    label={t('Phone number')}
                                     defaultValue=""
                                     value={phone}
                                     onChange={e => setPhone(e.target.value)}
@@ -515,13 +518,13 @@ function Products() {
 
                             <Grid item xs={12} lg={6}>
                                 <FormControl fullWidth>
-                                    <InputLabel id="demo-multiple-name-label">Select user:</InputLabel>
+                                    <InputLabel id="demo-multiple-name-label">{t('Select user:')}</InputLabel>
                                     <Select
                                         labelId="demo-multiple-name-label"
                                         id="demo-multiple-name"
                                         value={user}
                                         onChange={e => setUser(e.target.value)}
-                                        input={<OutlinedInput label="User" />}
+                                        input={<OutlinedInput label={t('User')} />}
                                     >
                                         {
                                             userList.map((user, i) => {
@@ -540,7 +543,7 @@ function Products() {
                             </Grid>
                             <Grid item xs={6} lg={6}>
                                 <FormControlLabel style={{ marginLeft: '5px' }} control={<Checkbox checked={isPopular}
-                                    onChange={e => setPopular(!isPopular)} />} label="isPopular" />
+                                    onChange={e => setPopular(!isPopular)} />} label={t('isPopular')} />
                             </Grid>
                         </Grid>
                         <Grid container spacing={2}>
@@ -548,8 +551,8 @@ function Products() {
                                 <TextField
                                     fullWidth
                                     id="filled-textarea"
-                                    label="Description"
-                                    placeholder="Enter Description..."
+                                    label={t('Description')}
+                                    placeholder={t('Enter Description...')}
                                     multiline
                                     rows={4}
                                     variant="filled"
@@ -583,10 +586,11 @@ function Products() {
                                         loadingPosition="start"
                                         startIcon={<AddIcon />}
                                         variant="contained"
+                                        color="primary"
                                         fullWidth={true}
                                         onClick={handleClick}
                                     >
-                                        {isLoading ? <p style={{ color: "white" }}>Please wait...</p> : <p style={{ color: "white" }}>Add</p>}
+                                        {isLoading ? <Typography variant="action">{t('Please wait...')}</Typography> : <Typography variant="action">{t('Add')}</Typography>}
                                     </LoadingButton>
 
                                 }
@@ -624,22 +628,22 @@ function Products() {
                         <Grid item lg={12} xs={12}>
 
                             <FormControl fullWidth>
-                                <InputLabel id="demo-simple-select-helper-label">Sub Category filter</InputLabel>
+                                <InputLabel id="demo-simple-select-helper-label">{t('Sub Category filter')}</InputLabel>
                                 <Select
                                     labelId="demo-simple-select-helper-label"
                                     id="demo-simple-select-helper"
                                     value={selectCategory}
-                                    label="Sub Category filter"
+                                    label={t('Sub Category filter')}
                                     onChange={e => setSelectCategory(e.target.value)}
                                 >
                                     <MenuItem key="" value="">
-                                        <em>None</em>
+                                        <em>{t('None')}</em>
                                     </MenuItem>
                                     {
                                         subCategories.map((element, i) => {
                                             return (
                                                 <MenuItem key={i} value={element.id}>
-                                                    {element.sub_category_name_tm}
+                                                    {element.sub_category_name_ru}
                                                 </MenuItem>
                                             )
                                         })
@@ -651,25 +655,25 @@ function Products() {
 
                         <Grid item lg={12} xs={12}>
                             <FormControl fullWidth>
-                                <InputLabel id="demo-simple-select-helper-label2">Status filter</InputLabel>
+                                <InputLabel id="demo-simple-select-helper-label2">{t('Status filter')}</InputLabel>
                                 <Select
                                     labelId="demo-simple-select-helper-label2"
                                     id="demo-simple-select-helper2"
                                     value={selectStatus}
-                                    label="Status filter"
+                                    label={t('Status filter')}
                                     onChange={e => setSelectStatus(e.target.value)}
                                 >
                                     <MenuItem key="" value="">
-                                        <em>None</em>
+                                        <em>{t('None')}</em>
                                     </MenuItem>
                                     {
                                         productStatuses.map((st) => {
                                             return (
                                                 <MenuItem
-                                                    key="Active"
+                                                    key={st.label}
                                                     value={st.value}
                                                 >
-                                                    {st.label}
+                                                    {t(st.label)}
                                                 </MenuItem>
                                             )
                                         })
@@ -684,7 +688,7 @@ function Products() {
                                 <Stack spacing={3}>
                                     <MobileDatePicker
                                         mask='__/__/____'
-                                        label="Start date"
+                                        label={t('Start date')}
                                         value={startDate}
                                         inputFormat="dd/MM/yyyy"
                                         onChange={(newValue) => {
@@ -700,7 +704,7 @@ function Products() {
                                 <Stack spacing={3}>
                                     <MobileDatePicker
                                         mask='__/__/____'
-                                        label="End date"
+                                        label={t('End date')}
                                         value={endDate}
                                         inputFormat="dd/MM/yyyy"
                                         onChange={(newValue) => {

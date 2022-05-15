@@ -16,7 +16,7 @@ import DistrictTable from './DistrictTable';
 import { AxiosInstance } from '../Axios/AxiosInstance';
 import { showError, showSuccess, showWarning } from '../Alert/Alert.mjs';
 import { ToastContainer, toast } from 'react-toastify';
-
+import {useTranslation} from '../../components/sidebar/Sidebar';
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 
@@ -35,6 +35,7 @@ const style = {
 };
 
 function District() {
+  const {t} = useTranslation();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -159,7 +160,7 @@ function District() {
               spacing={4}
               justifyContent={'flex-end'}
             >
-              <Button variant="outlined" onClick={handleOpen} startIcon={<AddIcon />}>Add District</Button>
+              <Button variant="outlined" onClick={handleOpen} startIcon={<AddIcon />}>{t('Add District')}</Button>
             </Stack>
           </Grid>
         </Grid>
@@ -195,7 +196,7 @@ function District() {
                   fullWidth
                   required
                   id="outlined-required"
-                  label="District name turkmen"
+                  label={t("District name turkmen")}
                   defaultValue=""
                   value={nameTM}
                   onChange={e=>setNameTM(e.target.value)}
@@ -206,7 +207,7 @@ function District() {
                   fullWidth
                   required
                   id="outlined-required"
-                  label="District name russian"
+                  label={t("District name russian")}
                   defaultValue=""
                   value={nameRU}
                   onChange={e=>setNameRU(e.target.value)}
@@ -220,7 +221,7 @@ function District() {
                   fullWidth
                   required
                   id="outlined-required"
-                  label="District name english"
+                  label={t("District name english")}
                   defaultValue=""
                   value={nameEN}
                   onChange={e=>setNameEN(e.target.value)}
@@ -228,13 +229,13 @@ function District() {
               </Grid>
               <Grid item md={12} lg={6}>
                 <FormControl fullWidth>
-                  <InputLabel id="demo-multiple-name-label">Region</InputLabel>
+                  <InputLabel id="demo-multiple-name-label">{t('Region')}</InputLabel>
                   <Select
                     labelId="demo-multiple-name-label"
                     id="demo-multiple-name"
                     value={region}
                     onChange={e=>setRegion(e.target.value)}
-                    input={<OutlinedInput label="Region" />}
+                    input={<OutlinedInput label={t('Region')} />}
                   >
                     {regions.map((region,i)=>{
                         return(
@@ -242,7 +243,7 @@ function District() {
                             key={`keeey${region.id}`}
                             value={region.id}
                           >
-                            {region.region_name_tm}
+                            {region.region_name_ru}
                           </MenuItem>
                         )
                     })}
@@ -262,7 +263,7 @@ function District() {
                     fullWidth={true}
                     onClick={handleClick}
                   >
-                    {isLoading ? <p style={{ color: "white" }}>Please wait...</p> : <p style={{ color: "white" }}>Add</p>}
+                    {isLoading ? <Typography variant="action">{t('Please wait...')}</Typography> : <Typography variant="action">{t('Add')}</Typography>}
                   </LoadingButton>
 
                 }

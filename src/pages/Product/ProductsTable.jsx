@@ -12,7 +12,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import { confirm } from "react-confirm-box";
 import './productstable.css';
-import { Modal, Stack } from '@mui/material';
+import { Modal, Stack, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { Box } from '@mui/system';
 import CloseIcon from '@mui/icons-material/Close';
@@ -45,6 +45,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 import { showError, showSuccess, showWarning } from '../Alert/Alert.mjs';
 import { checkStatus, productStatuses } from '../Constants/Constant.mjs';
 import AddIcon from '@mui/icons-material/Add';
+import {useTranslation} from '../../components/sidebar/Sidebar';
 
 const style = {
     position: 'absolute',
@@ -52,14 +53,15 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: '50%',
-    bgcolor: 'white',
+    bgcolor: 'background.paper',
     border: '2px solid transparent',
     borderRadius: '12px',
     boxShadow: 24,
     p: 4,
     overflow: 'scroll',
     height: '90%',
-    display: 'block'
+    display: 'block',
+    overflowX: 'hidden'
 };
 
 const style2 = {
@@ -68,7 +70,7 @@ const style2 = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: '30%',
-    bgcolor: 'white',
+    bgcolor: 'background.paper',
     border: '2px solid transparent',
     borderRadius: '12px',
     boxShadow: 24,
@@ -81,6 +83,7 @@ const Input = styled('input')({
 });
 
 const ProductsTable = ({ subCategories, productList, isEmptyPage, getProducts, page_count, userList }) => {
+    const {t} = useTranslation();
     const [categoryList, setCategoryList] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20])
     const [open, setOpen] = React.useState(false);
     const [eventOpen, setEventOpen] = React.useState(false);
@@ -214,7 +217,7 @@ const ProductsTable = ({ subCategories, productList, isEmptyPage, getProducts, p
 
 
     const confirmDialog = async (element) => {
-        if (window.confirm("Do you want delete this product?")) {
+        if (window.confirm(t("Do you want delete this product?"))) {
             deleteProduct(element);
         }
     };
@@ -264,10 +267,10 @@ const ProductsTable = ({ subCategories, productList, isEmptyPage, getProducts, p
         AxiosInstance.delete('/product/delete-product/' + element.id)
             .then(response => {
                 if (!response.data.error) {
-                    showSuccess("Successfully deleted!");
+                    showSuccess(t("Successfully deleted!"));
                     getProducts(page);
                 } else {
-                    showError("Something went wrong!");
+                    showError(t("Something went wrong!"));
                 }
             })
             .catch(err => {
@@ -276,8 +279,8 @@ const ProductsTable = ({ subCategories, productList, isEmptyPage, getProducts, p
     }
 
     const updateProduct = () => {
-        if (name == '' || price == '' || sub_category == '' || user == '' || id == 0) {
-            showWarning("Enter all required information");
+        if (name == '') {
+            showWarning(t('Please enter required information'));
             return;
         }
         setLoading(true);
@@ -310,13 +313,13 @@ const ProductsTable = ({ subCategories, productList, isEmptyPage, getProducts, p
         AxiosInstance.put('/product/update-product', formData)
             .then(response => {
                 if (!response.data.error) {
-                    showSuccess("Successfully updated!");
+                    showSuccess(t('Successfully updated!'));
                     setLoading(false);
                     clearInput();
                     handleClose();
                     getProducts(1)
                 } else {
-                    showError("Something went wrong!");
+                    showError(t("Something went wrong!"));
                     setLoading(false);
                 }
             })
@@ -354,7 +357,7 @@ const ProductsTable = ({ subCategories, productList, isEmptyPage, getProducts, p
 
     const addProductsToEvent=()=>{
         if(selectedEvent=='' || checkedProducts.length==0){
-            showWarning("Please enter required information");
+            showWarning(t("Please enter required information"));
             return;
         }
         setLoadingEvent(true);
@@ -364,13 +367,13 @@ const ProductsTable = ({ subCategories, productList, isEmptyPage, getProducts, p
         })
         .then(response => {
             if (!response.data.error) {
-                showSuccess("Successfully added!");
+                showSuccess(t('Successfully added!'));
                 setLoadingEvent(false);
                 setSelectedEvent('');
                 handleEventClose();
                 getProducts(page);
             } else {
-                showError("Something went wrong!");
+                showError(t('Something went wrong!'));
                 setLoadingEvent(false);
             }
         })
@@ -395,7 +398,7 @@ const ProductsTable = ({ subCategories, productList, isEmptyPage, getProducts, p
                                         productStatuses.map((item,i)=>{
                                             return(
                                                 <span>
-                                                    <label>{item.label}:</label><br/>
+                                                    <label>{t(item.label)}:</label><br/>
                                                     <div className="statusGuide" style={{background:item.color}}>
                                                     </div> 
                                                 </span>
@@ -407,7 +410,7 @@ const ProductsTable = ({ subCategories, productList, isEmptyPage, getProducts, p
                         </Grid>
                     <Grid item lg={6} sm={12}>
                         <Stack direction={'row'} justifyContent={'flex-end'} alignItems={'flex-end'}>
-                            <Button variant="text" color="error" onClick={handleEventOpen}>Add to event</Button>  
+                            <Button variant="text" color="error" onClick={handleEventOpen}>{t('Add to event')}</Button>  
                         </Stack>
                     </Grid>
                     </Grid>
@@ -420,18 +423,18 @@ const ProductsTable = ({ subCategories, productList, isEmptyPage, getProducts, p
                                        
                                     </TableCell>
                                     <TableCell>ID</TableCell>
-                                    <TableCell align="left">Product image</TableCell>
-                                    <TableCell align="left">Product name</TableCell>
-                                    <TableCell align="left">Price</TableCell>
-                                    <TableCell align="left">Size</TableCell>
-                                    <TableCell align="left">Category</TableCell>
-                                    <TableCell align="left">User</TableCell>
-                                    <TableCell align="left">User type</TableCell>
-                                    <TableCell align="left">Product limit</TableCell>
-                                    <TableCell align="left">Phone number</TableCell>
-                                    <TableCell align="left">Status</TableCell>
-                                    <TableCell align="left">DELETE</TableCell>
-                                    <TableCell align="left">EDIT</TableCell>
+                                    <TableCell align="left">{t('Product image')}</TableCell>
+                                    <TableCell align="left">{t('Product name')}</TableCell>
+                                    <TableCell align="left">{t('Price')}</TableCell>
+                                    <TableCell align="left">{t('Size')}</TableCell>
+                                    <TableCell align="left">{t('Category')}</TableCell>
+                                    <TableCell align="left">{t('User')}</TableCell>
+                                    <TableCell align="left">{t('User type')}</TableCell>
+                                    <TableCell align="left">{t('Product limit')}</TableCell>
+                                    <TableCell align="left">{t('Phone number')}</TableCell>
+                                    <TableCell align="left">{t('Status')}</TableCell>
+                                    <TableCell align="left">{t('DELETE')}</TableCell>
+                                    <TableCell align="left">{t('EDIT')}</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -465,7 +468,7 @@ const ProductsTable = ({ subCategories, productList, isEmptyPage, getProducts, p
                                                 <TableCell align="left">{element.sub_category_name_en}</TableCell>
                                                 <TableCell align="left">{element.fullname}</TableCell>
                                                 <TableCell align="left">{element.user_type}</TableCell>
-                                                <TableCell align="left">{(element.product_limit<0)?<label>Unlimited</label>:element.product_limit}</TableCell>
+                                                <TableCell align="left">{(element.product_limit<0)?<label>{t('Unlimited')}</label>:element.product_limit}</TableCell>
                                                 <TableCell align="left">{element.user_phone_number}</TableCell>
                                                 <TableCell align="left">{checkStatus(element.status).label}</TableCell>
                                                 <TableCell align="left"> <IconButton aria-label="delete" color="secondary" onClick={() => confirmDialog(element)}><DeleteIcon /></IconButton></TableCell>
@@ -518,7 +521,7 @@ const ProductsTable = ({ subCategories, productList, isEmptyPage, getProducts, p
                                     fullWidth
                                     required
                                     id="outlined-required"
-                                    label="Product name"
+                                    label={t('Product name')}
                                     defaultValue=""
                                     value={name}
                                     onChange={e => setName(e.target.value)}
@@ -529,7 +532,7 @@ const ProductsTable = ({ subCategories, productList, isEmptyPage, getProducts, p
                                     fullWidth
                                     required
                                     id="outlined-required"
-                                    label="Price"
+                                    label={t('Price')}
                                     type="number"
                                     defaultValue=""
                                     value={price}
@@ -543,7 +546,7 @@ const ProductsTable = ({ subCategories, productList, isEmptyPage, getProducts, p
                                 <TextField
                                     fullWidth
                                     id="outlined-required"
-                                    label="Size"
+                                    label={t('Size')}
                                     defaultValue=""
                                     value={size}
                                     onChange={e => setSize(e.target.value)}
@@ -551,22 +554,22 @@ const ProductsTable = ({ subCategories, productList, isEmptyPage, getProducts, p
                             </Grid>
                             <Grid item md={12} lg={6}>
                                 <FormControl fullWidth>
-                                    <InputLabel id="demo-multiple-name-label">Status</InputLabel>
+                                    <InputLabel id="demo-multiple-name-label">{t('Status')}</InputLabel>
                                     <Select
                                         labelId="demo-multiple-name-label"
                                         id="demo-multiple-name"
                                         value={status}
                                         onChange={e => setStatus(e.target.value)}
-                                        input={<OutlinedInput label="Status" />}
+                                        input={<OutlinedInput label={t('Status')} />}
                                     >
                                       {
                                             productStatuses.map((st) => {
                                                 return (
                                                     <MenuItem
-                                                        key="Active"
+                                                        key={st.label}
                                                         value={st.value}
                                                     >
-                                                        {st.label}
+                                                        {t(st.label)}
                                                     </MenuItem>
                                                 )
                                             })
@@ -579,19 +582,19 @@ const ProductsTable = ({ subCategories, productList, isEmptyPage, getProducts, p
                         <Grid container spacing={2}>
                             <Grid item md={12} lg={6}>
                                 <FormControl fullWidth>
-                                    <InputLabel id="demo-multiple-name-label">Sub Category</InputLabel>
+                                    <InputLabel id="demo-multiple-name-label">{t('Sub Category')}</InputLabel>
                                     <Select
                                         value={sub_category}
                                         onChange={e => setSubCategory(e.target.value)}
                                         labelId="demo-multiple-name-label"
                                         id="demo-multiple-name"
-                                        input={<OutlinedInput label="Sub category" />}
+                                        input={<OutlinedInput label={t('Sub category')} />}
                                     >
                                         {
                                             subCategories.map((element, i) => {
                                                 return (
                                                     <MenuItem key={i} value={element.id}>
-                                                        {element.sub_category_name_tm}
+                                                        {element.sub_category_name_ru}
                                                     </MenuItem>
                                                 )
                                             })
@@ -604,7 +607,7 @@ const ProductsTable = ({ subCategories, productList, isEmptyPage, getProducts, p
                                 <TextField
                                     fullWidth
                                     id="outlined-required"
-                                    label="Phone number"
+                                    label={t('Phone number')}
                                     defaultValue=""
                                     value={phone}
                                     onChange={e => setPhone(e.target.value)}
@@ -615,13 +618,13 @@ const ProductsTable = ({ subCategories, productList, isEmptyPage, getProducts, p
 
                             <Grid item xs={12} lg={6}>
                                 <FormControl fullWidth>
-                                    <InputLabel id="demo-multiple-name-label">Select user:</InputLabel>
+                                    <InputLabel id="demo-multiple-name-label">{t('Select user:')}</InputLabel>
                                     <Select
                                         labelId="demo-multiple-name-label"
                                         id="demo-multiple-name"
                                         value={user}
                                         onChange={e => setUser(e.target.value)}
-                                        input={<OutlinedInput label="User" />}
+                                        input={<OutlinedInput label={t('User')} />}
                                     >
                                         {
                                             userList.map((user, i) => {
@@ -640,7 +643,7 @@ const ProductsTable = ({ subCategories, productList, isEmptyPage, getProducts, p
                             </Grid>
                             <Grid item xs={6} lg={6}>
                                 <FormControlLabel style={{ marginLeft: '5px' }} control={<Checkbox checked={isPopular}
-                                    onChange={e => setPopular(!isPopular)} />} label="isPopular" />
+                                    onChange={e => setPopular(!isPopular)} />} label={t('isPopular')} />
                             </Grid>
                         </Grid>
                         <Grid container spacing={2}>
@@ -648,8 +651,8 @@ const ProductsTable = ({ subCategories, productList, isEmptyPage, getProducts, p
                                 <TextField
                                     fullWidth
                                     id="filled-textarea"
-                                    label="Description"
-                                    placeholder="Enter Description..."
+                                    label={t('Description')}
+                                    placeholder={t('Enter Description...')}
                                     multiline
                                     rows={4}
                                     variant="filled"
@@ -664,8 +667,8 @@ const ProductsTable = ({ subCategories, productList, isEmptyPage, getProducts, p
                                 <TextField
                                     fullWidth
                                     id="filled-textarea"
-                                    label="Cancel reason"
-                                    placeholder="Enter cancel reason..."
+                                    label={t('Cancel reason')}
+                                    placeholder={t('Enter cancel reason...')}
                                     multiline
                                     rows={4}
                                     variant="filled"
@@ -702,10 +705,11 @@ const ProductsTable = ({ subCategories, productList, isEmptyPage, getProducts, p
                                         loadingPosition="start"
                                         startIcon={<EditIcon />}
                                         variant="contained"
+                                        color="primary"
                                         fullWidth={true}
                                         onClick={handleClick}
                                     >
-                                        {isLoading ? <p style={{ color: "white" }}>Please wait...</p> : <p style={{ color: "white" }}>Edit</p>}
+                                        {isLoading ? <Typography variant="action">{t('Please wait...')}</Typography> : <Typography variant="action">{t('Edit')}</Typography>}
                                     </LoadingButton>
 
                                 }
@@ -716,7 +720,7 @@ const ProductsTable = ({ subCategories, productList, isEmptyPage, getProducts, p
 
                         <Grid container spacing={2}>
                             <Grid item md={12} lg={12}>
-                                <ImagesListComponent setImageCount={setImageCount} setAllImages={setAllImages} getProducts={getProducts} page={page} itemData={allImages} />
+                                <ImagesListComponent setImageCount={setImageCount} setAllImages={setAllImages} getProducts={getProducts} page={page} itemData={allImages} t={t} />
                             </Grid>
                         </Grid>
 
@@ -750,20 +754,20 @@ const ProductsTable = ({ subCategories, productList, isEmptyPage, getProducts, p
                         <Grid item>
                             {
                                 checkedProducts.length>0?
-                                <label>{checkedProducts.length} products selected</label>
+                                <label>{checkedProducts.length} {t('products selected')}</label>
                                 :
-                                <label style={{color:'red'}}>0 products selected</label>
+                                <label style={{color:'red'}}>0 {t('products selected')}</label>
                             }
                         </Grid>
                         <Grid item xs={12} lg={12}>
                                 <FormControl fullWidth>
-                                    <InputLabel id="demo-multiple-name-label">Select event:</InputLabel>
+                                    <InputLabel id="demo-multiple-name-label">{t('Select event:')}</InputLabel>
                                     <Select
                                         labelId="demo-multiple-name-label"
                                         id="demo-multiple-name"
                                         value={selectedEvent}
                                         onChange={e => setSelectedEvent(e.target.value)}
-                                        input={<OutlinedInput label="Event" />}
+                                        input={<OutlinedInput label={t('Event')} />}
                                     >
                                         {
                                             events.map((event, i) => {
@@ -773,7 +777,7 @@ const ProductsTable = ({ subCategories, productList, isEmptyPage, getProducts, p
                                                         key={event.id}
                                                         value={event.id}
                                                     >
-                                                        {event.title_tm}
+                                                        {event.title_ru}
                                                     </MenuItem>: null
                                                 )
                                             })
@@ -784,28 +788,18 @@ const ProductsTable = ({ subCategories, productList, isEmptyPage, getProducts, p
                             <Grid item md={12} lg={12}>
                                
                             {
-                                checkedProducts.length>0?
+                               
                                 <LoadingButton
                                     loading={isLoadingEvent}
                                     loadingPosition="start"
                                     startIcon={<AddIcon />}
                                     variant="contained"
+                                    color="primary"
                                     fullWidth={true}
+                                    disabled={checkedProducts.length<=0}
                                     onClick={handleClickEvent}
                                 >
-                                    {isLoading ? <p style={{ color: "white" }}>Please wait...</p> : <p style={{ color: "white" }}>Add</p>}
-                                </LoadingButton>
-                                :
-                                <LoadingButton
-                                    loading={isLoadingEvent}
-                                    loadingPosition="start"
-                                    startIcon={<AddIcon />}
-                                    variant="contained"
-                                    fullWidth={true}
-                                    disabled
-                                    onClick={handleClickEvent}
-                                >
-                                    {isLoading ? <p style={{ color: "white" }}>Please wait...</p> : <p style={{ color: "white" }}>Add</p>}
+                                    {isLoading ? <Typography variant="action">{t('Please wait...')}</Typography> : <Typography variant="action">{t('Add')}</Typography>}
                                 </LoadingButton>
                             }
 
@@ -821,7 +815,7 @@ const ProductsTable = ({ subCategories, productList, isEmptyPage, getProducts, p
     )
 }
 
-export const ImagesListComponent = ({ itemData, getProducts, page,setAllImages,setImageCount }) => {
+export const ImagesListComponent = ({ itemData, getProducts, page,setAllImages,setImageCount,t }) => {
     const handleClick = (img1, img2) => {
         window.open(img1);
         window.open(img2);
@@ -856,7 +850,7 @@ export const ImagesListComponent = ({ itemData, getProducts, page,setAllImages,s
     return (
         <ImageList sx={{}}>
             <ImageListItem key="Subheader" cols={2}>
-                <ListSubheader component="div">All images</ListSubheader>
+                <ListSubheader component="div">{t('All images')}</ListSubheader>
             </ImageListItem>
             {itemData.map((item) => (
                 <ImageListItem key={item.img}>
